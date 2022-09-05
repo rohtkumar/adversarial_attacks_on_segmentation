@@ -6,7 +6,7 @@ from core import dataloader as loader, cleanDataframe as cldf
 from utils import commandline as cl, logger, tools, utils
 from models import model
 from common import trainer
-import torch
+
 
 def main():
    
@@ -24,33 +24,31 @@ def main():
     os.chdir(args.save)    
     logger.configure_logging(os.path.join(args.save, 'logbook.txt'))
     
-    tools.write2file(sorted(vars(args).items()), filename=os.path.join(args.save, 'args.txt'))
-    with logger.LoggingBlock("Intialization", emph=True):
-        for argument, value in sorted(vars(args).items()):
-            reset = colorama.Fore.GREEN
-            color = colorama.Fore.CYAN
-            logging.info('{}{}: {}{}'.format(color, argument, value, reset))
+    tools.write2file(sorted(vars(args).items()), filename=os.path.join(args.save, 'args.txt'))   
     
     tools.set_seed(42)
     train_dataloader, val_dataloader, test_dataloader = loader.configure_data_loaders(args)
     
-#     if args.kfold == False:
-#         trainer.train_model(args, train_dataloader, val_dataloader)
-#     else:
-#         trainer.train_model_kfold(args, train_dataloader, val_dataloader)
+    
+    
+    
+    
+
     for i in range(args.kfold_num):
         with logger.LoggingBlock("Setup Hyperparameters", emph=True):  
-            class_ =  tools.getClass("torch.nn", args.training_loss)
+            class_ =  tools.getClass("sm.losses", args.training_loss1)
             args.training_loss1 = class_()
-            class_ =  tools.getClass("torch.nn", args.validation_loss)
-            args.validation_loss1 = class_()
+            class_ =  tools.getClass("sm.losses", args.training_loss2)
+            args.training_loss2 = class_()
+            #class_ =  tools.getClass("torch.nn", args.validation_loss)
+            #args.validation_loss1 = class_()
             class_ =  tools.getClass("torch.optim", args.optimizer)
             args.optimizer1 = class_
             class_ =  tools.getClass("torch.optim.lr_scheduler", args.lr_scheduler)
             args.lr_scheduler1 = class_
         
         with logger.LoggingBlock("Setup Model", emph=True): 
-            args.model = model.initialize_multimodal(args, 1, args.train, args.meta_args)
+            args.stdmodel = model.initialize_std_model(args.model, 10, "softmax")
             args.optimizer1 = args.optimizer1(args.model.parameters(), args.optimizer_lr)
             args.lr_scheduler1 = args.lr_scheduler1(args.optimizer1, args.lr_scheduler_milestones, args.lr_scheduler_gamma)
         if args.train is True:

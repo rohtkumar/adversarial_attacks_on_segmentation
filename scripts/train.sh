@@ -2,33 +2,19 @@
 
 DATA_HOME="../../dataset/images/"
 SOURCE_HOME="../adversarial_attacks_on_segmentation"
-BATCH_SIZE=32
-if [ $1 = 'prod' ]
-then
-    echo "Prod"
-    pip install efficientnet-pytorch
-    DATA_HOME="/project/rokumar/SIIM-ISIC/"
-    SOURCE_HOME="/project/rokumar/"
-    FILE_NAME="meta.csv"
-    BATCH_SIZE=8
-else
-    echo "Local"
-    DATA_HOME="/rokumar/project/SIIM-ISIC/"
-    SOURCE_HOME="/project/rokumar/"
-    FILE_NAME="train.csv"
-    BATCH_SIZE=2
-fi
+BATCH_SIZE=4
 
 
 #resnet50 or efficientnetb3
-MODEL=$2
+MODEL=$1
 # save best Model checkpoint path
 TIME=$(date +"%Y%m%d-%H%M%S")
 SAVE_PATH="$SOURCE_HOME/data/$MODEL$ALIAS$TIME"
 CHECKPOINT="/thesis/rokumar/Checkpoint/"
 
 Train_Image_Augmentation=True
-Train_Loss_Function="BCELoss"
+Train_Loss_Function1="DiceLoss"
+Train_Loss_Function2="CategoricalFocalLoss"
 
 Valid_Image_Augmentation=False
 Valid_Loss_Function="BCELoss"
@@ -37,15 +23,13 @@ Valid_Loss_Function="BCELoss"
 python ../src/main.py \
 --batch_size=$BATCH_SIZE \
 --checkpoint=$CHECKPOINT \
---lr_scheduler=MultiStepLR  \
+--lr_scheduler="PiecewiseConstantDecay"  \
 --model=$MODEL \
 --num_workers=2 \
---kfold=True \
---kfold_num=5 \
 --train=True \
 --model_name=$MODEL \
---lr_scheduler_gamma=0.5 \
---lr_scheduler_milestones="[23, 39, 47, 54]" \
+--lr_scheduler_values="[0.1, 0.01, 1e-3]" \
+--lr_scheduler_boundries="[15000, 20000]" \
 --early_stopping=True \
 --early_stopping_patience=10 \
 --optimizer=Adam \
@@ -57,7 +41,8 @@ python ../src/main.py \
 --dataset_root=$DATA_HOME \
 --source_home=$SOURCE_HOME \
 --training_augmentation=$Train_Image_Augmentation \
---training_loss=$Train_Loss_Function \
+--training_loss1=$Train_Loss_Function1 \
+--training_loss2=$Train_Loss_Function2 \
 --validation_augmentation=$Valid_Image_Augmentation \
 --validation_loss=$Valid_Loss_Function \
 --finetuning=False \

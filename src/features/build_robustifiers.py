@@ -7,12 +7,18 @@ from attacks.robustifiers import pgd_l2_robust
 import numpy as np
 import time
 
-seed=25
-tf.random.set_seed(seed)
-np.random.seed(seed)
+
 
 log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 logging.basicConfig(level=logging.INFO, format=log_fmt)
+
+
+def robust_preprocess(img, label):
+    """Defines preprocessing / data augmentation for robust & nonrobust features"""
+    img = tf.image.resize_with_pad(img, 32+4, 32+4)
+    img = tf.image.random_crop(img, size=[32, 32, 3])
+    img = tf.image.stateless_random_flip_left_right(img, (15, 13))
+    return img, label
 
 %%time
 def robustify(robust_model, train_ds, iters=1000, alpha=0.1, batch_size=32):
@@ -52,12 +58,14 @@ def robustify(robust_model, train_ds, iters=1000, alpha=0.1, batch_size=32):
       # Reset random image batch
         rn = np.random.randint(0, len(train_ds)-1) # -1 because last batch might be smaller
         rand_batch = train_to_pull[rn][0]
+        
+    
+    # Convert to TensorFlow Dataset
+    robust_ds = tf.data.Dataset.from_tensor_slices((tf.concat(robust_train, axis=0), tf.concat(orig_labels, axis=0))).prefetch(AUTOTUNE).map(robust_preprocess, num_parallel_calls=AUTOTUNE).shuffle(len(robust_train)).batch(batch_size)
+    
+    return robust_ds
 
-    return robust_train, orig_labels
 
 
-
-# Convert to TensorFlow Dataset
-robust_ds = tf.data.Dataset.from_tensor_slices((tf.concat(robust_train, axis=0), tf.concat(orig_labels, axis=0))).prefetch(AUTOTUNE).map(robust_preprocess, num_parallel_calls=AUTOTUNE).shuffle(len(robust_train)).batch(BATCH_SIZE)
-     
+  
 
