@@ -1,0 +1,143 @@
+[I 15:43:59.545 NotebookApp] [jupyter_nbextensions_configurator] enabled 0.4.1
+[I 15:43:59.549 NotebookApp] Serving notebooks from local directory: /home/rohkumar/code/adversarial_attacks_on_segmentation
+[I 15:43:59.549 NotebookApp] Jupyter Notebook 6.4.8 is running at:
+[I 15:43:59.549 NotebookApp] http://localhost:8888/?token=762bb1a33cfac324b8b9194c8e17cc519eb6f8a23355d4f6
+[I 15:43:59.549 NotebookApp]  or http://127.0.0.1:8888/?token=762bb1a33cfac324b8b9194c8e17cc519eb6f8a23355d4f6
+[I 15:43:59.549 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 15:43:59.557 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/rohkumar/.local/share/jupyter/runtime/nbserver-10800-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=762bb1a33cfac324b8b9194c8e17cc519eb6f8a23355d4f6
+     or http://127.0.0.1:8888/?token=762bb1a33cfac324b8b9194c8e17cc519eb6f8a23355d4f6
+[I 15:44:12.951 NotebookApp] 302 GET / (::1) 0.840000ms
+[W 15:44:16.432 NotebookApp] Config option `template_path` not recognized by `ExporterCollapsibleHeadings`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.445 NotebookApp] Config option `template_path` not recognized by `ExporterCollapsibleHeadings`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.480 NotebookApp] Config option `template_path` not recognized by `TocExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.486 NotebookApp] Config option `template_path` not recognized by `TocExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.511 NotebookApp] Config option `template_path` not recognized by `LenvsHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.521 NotebookApp] Config option `template_path` not recognized by `LenvsHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.551 NotebookApp] Config option `template_path` not recognized by `LenvsTocHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.561 NotebookApp] Config option `template_path` not recognized by `LenvsTocHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.612 NotebookApp] Config option `template_path` not recognized by `LenvsLatexExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.617 NotebookApp] Config option `template_path` not recognized by `LenvsLatexExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.799 NotebookApp] Config option `template_path` not recognized by `LenvsSlidesExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.805 NotebookApp] Config option `template_path` not recognized by `LenvsSlidesExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.906 NotebookApp] Config option `template_path` not recognized by `ExporterCollapsibleHeadings`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.915 NotebookApp] Config option `template_path` not recognized by `ExporterCollapsibleHeadings`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.946 NotebookApp] Config option `template_path` not recognized by `TocExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.952 NotebookApp] Config option `template_path` not recognized by `TocExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.982 NotebookApp] Config option `template_path` not recognized by `LenvsHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:16.992 NotebookApp] Config option `template_path` not recognized by `LenvsHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:17.019 NotebookApp] Config option `template_path` not recognized by `LenvsTocHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:17.029 NotebookApp] Config option `template_path` not recognized by `LenvsTocHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:17.073 NotebookApp] Config option `template_path` not recognized by `LenvsLatexExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:17.078 NotebookApp] Config option `template_path` not recognized by `LenvsLatexExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:17.253 NotebookApp] Config option `template_path` not recognized by `LenvsSlidesExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:17.259 NotebookApp] Config option `template_path` not recognized by `LenvsSlidesExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:44:18.201 NotebookApp] 404 GET /nbextensions/pydeck/extension.js?v=20220905154358 (::1) 11.370000ms referer=http://127.0.0.1:8888/notebooks/notebooks/Model_attack.ipynb
+[I 15:44:18.210 NotebookApp] Kernel started: 9b72ea7c-4cd1-483f-95f2-ee5a7c317ba8, name: python3
+[W 15:44:18.212 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js?v=20220905154358 (::1) 1.490000ms referer=http://127.0.0.1:8888/notebooks/notebooks/Model_attack.ipynb
+[I 15:44:36.195 NotebookApp] KernelRestarter: restarting kernel (1/5), keep random ports
+WARNING:root:kernel 9b72ea7c-4cd1-483f-95f2-ee5a7c317ba8 restarted
+[I 15:46:18.180 NotebookApp] Saving file at /notebooks/Model_attack.ipynb
+[IPKernelApp] WARNING | Parent appears to have exited, shutting down.
+[I 15:47:08.507 NotebookApp] [jupyter_nbextensions_configurator] enabled 0.4.1
+[I 15:47:08.512 NotebookApp] Serving notebooks from local directory: /home/rohkumar/code/adversarial_attacks_on_segmentation
+[I 15:47:08.512 NotebookApp] Jupyter Notebook 6.4.8 is running at:
+[I 15:47:08.512 NotebookApp] http://localhost:8888/?token=7eed44db56eccc4d2ba82771a61762a2187c8c85549ba3c2
+[I 15:47:08.512 NotebookApp]  or http://127.0.0.1:8888/?token=7eed44db56eccc4d2ba82771a61762a2187c8c85549ba3c2
+[I 15:47:08.512 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 15:47:08.519 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/rohkumar/.local/share/jupyter/runtime/nbserver-13462-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=7eed44db56eccc4d2ba82771a61762a2187c8c85549ba3c2
+     or http://127.0.0.1:8888/?token=7eed44db56eccc4d2ba82771a61762a2187c8c85549ba3c2
+[I 15:47:09.693 NotebookApp] 302 GET /tree? (::1) 1.440000ms
+[W 15:47:14.290 NotebookApp] 404 GET /api/kernels/9b72ea7c-4cd1-483f-95f2-ee5a7c317ba8/channels?session_id=2ec389d3ee5d491f805711b39369f3a2 (::1): Kernel does not exist: 9b72ea7c-4cd1-483f-95f2-ee5a7c317ba8
+[W 15:47:14.301 NotebookApp] 404 GET /api/kernels/9b72ea7c-4cd1-483f-95f2-ee5a7c317ba8/channels?session_id=2ec389d3ee5d491f805711b39369f3a2 (::1) 15.470000ms referer=None
+[I 15:47:21.728 NotebookApp] 302 GET / (::1) 0.820000ms
+[W 15:47:24.604 NotebookApp] Config option `template_path` not recognized by `ExporterCollapsibleHeadings`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:24.616 NotebookApp] Config option `template_path` not recognized by `ExporterCollapsibleHeadings`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:24.651 NotebookApp] Config option `template_path` not recognized by `TocExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:24.656 NotebookApp] Config option `template_path` not recognized by `TocExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:24.686 NotebookApp] Config option `template_path` not recognized by `LenvsHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:24.696 NotebookApp] Config option `template_path` not recognized by `LenvsHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:24.720 NotebookApp] Config option `template_path` not recognized by `LenvsTocHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:24.730 NotebookApp] Config option `template_path` not recognized by `LenvsTocHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:24.776 NotebookApp] Config option `template_path` not recognized by `LenvsLatexExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:24.781 NotebookApp] Config option `template_path` not recognized by `LenvsLatexExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:24.973 NotebookApp] Config option `template_path` not recognized by `LenvsSlidesExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:24.981 NotebookApp] Config option `template_path` not recognized by `LenvsSlidesExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:25.081 NotebookApp] Config option `template_path` not recognized by `ExporterCollapsibleHeadings`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:25.090 NotebookApp] Config option `template_path` not recognized by `ExporterCollapsibleHeadings`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:25.121 NotebookApp] Config option `template_path` not recognized by `TocExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:25.127 NotebookApp] Config option `template_path` not recognized by `TocExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:25.174 NotebookApp] Config option `template_path` not recognized by `LenvsHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:25.184 NotebookApp] Config option `template_path` not recognized by `LenvsHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:25.208 NotebookApp] Config option `template_path` not recognized by `LenvsTocHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:25.218 NotebookApp] Config option `template_path` not recognized by `LenvsTocHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:25.261 NotebookApp] Config option `template_path` not recognized by `LenvsLatexExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:25.267 NotebookApp] Config option `template_path` not recognized by `LenvsLatexExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:25.439 NotebookApp] Config option `template_path` not recognized by `LenvsSlidesExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:25.445 NotebookApp] Config option `template_path` not recognized by `LenvsSlidesExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 15:47:25.748 NotebookApp] 404 GET /nbextensions/pydeck/extension.js?v=20220905154707 (::1) 5.190000ms referer=http://127.0.0.1:8888/notebooks/notebooks/Model_attack.ipynb
+[W 15:47:25.772 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js?v=20220905154707 (::1) 2.640000ms referer=http://127.0.0.1:8888/notebooks/notebooks/Model_attack.ipynb
+[I 15:47:26.459 NotebookApp] Kernel started: 7044523a-7f58-4d63-b61c-ee349425cb5b, name: python3
+[I 15:48:14.450 NotebookApp] KernelRestarter: restarting kernel (1/5), keep random ports
+WARNING:root:kernel 7044523a-7f58-4d63-b61c-ee349425cb5b restarted
+[I 15:49:26.441 NotebookApp] Saving file at /notebooks/Model_attack.ipynb
+[I 15:54:35.471 NotebookApp] KernelRestarter: restarting kernel (1/5), keep random ports
+WARNING:root:kernel 7044523a-7f58-4d63-b61c-ee349425cb5b restarted
+[I 15:55:26.438 NotebookApp] Saving file at /notebooks/Model_attack.ipynb
+[IPKernelApp] WARNING | Parent appears to have exited, shutting down.
+[I 16:01:05.354 NotebookApp] [jupyter_nbextensions_configurator] enabled 0.4.1
+[I 16:01:05.358 NotebookApp] Serving notebooks from local directory: /home/rohkumar/code/adversarial_attacks_on_segmentation
+[I 16:01:05.358 NotebookApp] Jupyter Notebook 6.4.8 is running at:
+[I 16:01:05.358 NotebookApp] http://localhost:8888/?token=f9c1b0d627919ec9116a036796fa204416a8c36d52b79c9a
+[I 16:01:05.358 NotebookApp]  or http://127.0.0.1:8888/?token=f9c1b0d627919ec9116a036796fa204416a8c36d52b79c9a
+[I 16:01:05.358 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 16:01:05.366 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/rohkumar/.local/share/jupyter/runtime/nbserver-19994-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=f9c1b0d627919ec9116a036796fa204416a8c36d52b79c9a
+     or http://127.0.0.1:8888/?token=f9c1b0d627919ec9116a036796fa204416a8c36d52b79c9a
+[W 16:01:17.906 NotebookApp] Config option `template_path` not recognized by `ExporterCollapsibleHeadings`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:17.922 NotebookApp] Config option `template_path` not recognized by `ExporterCollapsibleHeadings`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:17.957 NotebookApp] Config option `template_path` not recognized by `TocExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:17.963 NotebookApp] Config option `template_path` not recognized by `TocExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:17.988 NotebookApp] Config option `template_path` not recognized by `LenvsHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.002 NotebookApp] Config option `template_path` not recognized by `LenvsHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.026 NotebookApp] Config option `template_path` not recognized by `LenvsTocHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.036 NotebookApp] Config option `template_path` not recognized by `LenvsTocHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.086 NotebookApp] Config option `template_path` not recognized by `LenvsLatexExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.091 NotebookApp] Config option `template_path` not recognized by `LenvsLatexExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.271 NotebookApp] Config option `template_path` not recognized by `LenvsSlidesExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.277 NotebookApp] Config option `template_path` not recognized by `LenvsSlidesExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.368 NotebookApp] Config option `template_path` not recognized by `ExporterCollapsibleHeadings`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.377 NotebookApp] Config option `template_path` not recognized by `ExporterCollapsibleHeadings`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.408 NotebookApp] Config option `template_path` not recognized by `TocExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.414 NotebookApp] Config option `template_path` not recognized by `TocExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.441 NotebookApp] Config option `template_path` not recognized by `LenvsHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.451 NotebookApp] Config option `template_path` not recognized by `LenvsHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.475 NotebookApp] Config option `template_path` not recognized by `LenvsTocHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.485 NotebookApp] Config option `template_path` not recognized by `LenvsTocHTMLExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.527 NotebookApp] Config option `template_path` not recognized by `LenvsLatexExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.532 NotebookApp] Config option `template_path` not recognized by `LenvsLatexExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.718 NotebookApp] Config option `template_path` not recognized by `LenvsSlidesExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:18.729 NotebookApp] Config option `template_path` not recognized by `LenvsSlidesExporter`.  Did you mean one of: `extra_template_paths, template_name, template_paths`?
+[W 16:01:19.313 NotebookApp] 404 GET /nbextensions/pydeck/extension.js?v=20220905160104 (::1) 18.250000ms referer=http://127.0.0.1:8888/notebooks/notebooks/Model_attack.ipynb
+[I 16:01:19.916 NotebookApp] Kernel started: f904aede-f694-4347-a72c-6d3f331b5601, name: python3
+[W 16:01:20.007 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js?v=20220905160104 (::1) 2.830000ms referer=http://127.0.0.1:8888/notebooks/notebooks/Model_attack.ipynb
+[I 16:01:52.905 NotebookApp] KernelRestarter: restarting kernel (1/5), keep random ports
+WARNING:root:kernel f904aede-f694-4347-a72c-6d3f331b5601 restarted
+[I 16:02:20.884 NotebookApp] Starting buffering for f904aede-f694-4347-a72c-6d3f331b5601:7f8046cefacf4657b8300cbcc69f6f20
+[C 08:50:02.315 NotebookApp] received signal 15, stopping
+[I 08:50:02.371 NotebookApp] Shutting down 1 kernel
+[I 08:50:02.375 NotebookApp] Kernel shutdown: f904aede-f694-4347-a72c-6d3f331b5601
+[I 08:50:02.390 NotebookApp] Shutting down 0 terminals

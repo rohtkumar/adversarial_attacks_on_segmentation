@@ -6,6 +6,7 @@ import os
 import importlib
 import random
 import tensorflow as tf
+import segmentation_models
 
 
 def str2bool(v):

@@ -3,9 +3,11 @@ from tensorflow import keras as K
 K.backend.set_image_data_format('channels_last')
 
 import numpy as np
+IMG_SIZE=128
 
-tf.random.set_seed(seed)
-np.random.seed(seed)
+def define_img_size(img_size):
+    IMG_SIZE=img_size
+    # print(IMG_SIZE)
 
 def parse_image(img_path: str) -> dict:
     """Load an image and its annotation (mask) and returning
@@ -83,7 +85,8 @@ def load_image_train(datapoint: dict) -> tuple:
     tuple
         A modified image and its mask.
     """
-    print(datapoint['image'])
+
+    # IMG_SIZE=128
     input_image = tf.image.resize(datapoint['image'], (IMG_SIZE, IMG_SIZE))
     input_mask = tf.image.resize(datapoint['segmentation_mask'], (IMG_SIZE, IMG_SIZE))
 
@@ -93,7 +96,7 @@ def load_image_train(datapoint: dict) -> tuple:
           input_mask = tf.image.flip_left_right(input_mask)
 
     input_image, input_mask = normalize(input_image, input_mask)
-
+    print(input_image)
     return input_image, input_mask   
 
 @tf.function
@@ -118,6 +121,7 @@ def load_image_test(datapoint: dict) -> tuple:
         A modified image and its mask.
     """
 #     print(datapoint['image'])
+#     IMG_SIZE = 128
     input_image = tf.image.resize(datapoint['image'], (IMG_SIZE, IMG_SIZE))
     input_mask = tf.image.resize(datapoint['segmentation_mask'], (IMG_SIZE, IMG_SIZE))
 

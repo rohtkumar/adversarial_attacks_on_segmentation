@@ -1,13 +1,15 @@
 import argparse
+import importlib
 import os
 import sys
 import logging
 import ast
-import torch
+import tensorflow as tf
 import inspect
-from utils import tools
+from util import tools
 
-def _parse_arguments():
+
+def parse_arguments():
 
     parser = argparse.ArgumentParser()
     add = parser.add_argument
@@ -21,18 +23,19 @@ def _parse_arguments():
     add("--start_epoch", type=int, default=1)
     add("--total_epochs", type=int, default=1)    
     add("--lr_scheduler", type=tools.str2str_or_none)
-    add("--lr_scheduler_values", type=str2intlist)
-    add("--lr_scheduler_boundries", type=tools.str2intlist)
+    #add("--lr_scheduler_values", type=tools.str2intlist)
+    #add("--lr_scheduler_boundries", type=tools.str2intlist)
+    add("--img_size", type=int, default=128)
     add("--optimizer_lr", type=float)
     add("--model_name", type=tools.str2str_or_none)
     add("--early_stopping", type=tools.str2bool, default=True)
     add("--early_stopping_patience", type=int, default=2)
-    add("--dataset_root", default="SIIM-IISC/", type=str)
+    add("--dataset_root", default="/", type=str)
     add("--meta_args", type=int, default=6)
     add("--source_home", type=tools.str2str_or_none)
     add("--file_name", default="meta.csv", type=tools.str2str_or_none)
     add("--finetuning", type=tools.str2bool, default=False)
-    add("--train", type=tools.str2bool, default=True)    
+    add("--train", type=tools.str2str_or_none, default="train")
     add("--training_augmentation", type=tools.str2bool, default=True)
     add("--validation_augmentation", type=tools.str2bool, default=False)
     add("--model", type=tools.str2str_or_none)    
@@ -42,11 +45,11 @@ def _parse_arguments():
     add("--validation_loss", type=tools.str2str_or_none, default='CategoricalFocalLoss')   
     
     args = parser.parse_args()
-    args.cuda = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     return args
 
-def add_arguments_for_module(parser, module, name, default_class ):
+def add_arguments_for_module(parser, module_name, default_class ):
     
     module = importlib.import_module(module_name)
-    class_ = getattr(module, class_name)
+    class_ = getattr(module, default_class)
     print(class_) 
