@@ -20,6 +20,7 @@ def parse_arguments():
     add("--evaluation", default=False)
     add("--num_workers", type=int, default=8)
     add("--save", default="temp_exp/", type=str)
+    add("--load", type=str)
     add("--start_epoch", type=int, default=1)
     add("--total_epochs", type=int, default=1)    
     add("--lr_scheduler", type=tools.str2str_or_none)
@@ -34,7 +35,11 @@ def parse_arguments():
     add("--source_home", type=tools.str2str_or_none)
     add("--file_name", default="meta.csv", type=tools.str2str_or_none)
     add("--finetuning", type=tools.str2bool, default=False)
+<<<<<<< HEAD
     add("--train", type=tools.str2bool, default=True)    
+=======
+    add("--mode", type=tools.str2str_or_none, default="train")
+>>>>>>> 71f5dd9197c4d1e01a17496f08cd286e7dcf6275
     add("--training_augmentation", type=tools.str2bool, default=True)
     add("--validation_augmentation", type=tools.str2bool, default=False)
     add("--model", type=tools.str2str_or_none)    

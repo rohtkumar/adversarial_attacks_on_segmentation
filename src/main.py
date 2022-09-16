@@ -4,7 +4,13 @@ import colorama
 import pandas as pd
 from util import commandline as cl, logger, tools
 from data import make_dataset as md
+<<<<<<< HEAD
 from models import models, Std_train as train
+=======
+from models import models, Std_train, adversarial_train as adv_train
+import attacks
+from features import build_robustifiers as robust
+>>>>>>> 71f5dd9197c4d1e01a17496f08cd286e7dcf6275
 import segmentation_models as sm
 
 
@@ -48,9 +54,25 @@ def main():
         args.lr_scheduler1 = class_
 
     with logger.LoggingBlock("Setup Model", emph=True):
+<<<<<<< HEAD
         args.stdmodel = models.initialize_std_model(args.model, 10, "softmax")
         args.optimizer1 = args.optimizer1(args.model.parameters(), args.optimizer_lr)
         args.lr_scheduler1 = args.lr_scheduler1(args.optimizer1, args.lr_scheduler_milestones, args.lr_scheduler_gamma)
+=======
+        if args.mode == "Std_train":
+            args.std_model = models.initialize_std_model(args, 10, "softmax")
+            Std_train.train(args, train_dataset, val_dataset)
+        elif args.mode == "Adv_train":
+            args.adv_model = models.init_adv_model(args.model, 10, "softmax")
+            adv_train.adversarial_training(args, train_dataset, val_dataset, attacks.pgd_l2_adv, epsilon=0.5, num_iter=7, alpha=0.5 / 5, epochs=25000 // 391)
+        elif args.mode == "Robustfier":
+            args.adv_model = tools.load_model(models.init_adv_model(args.model, 10, "softmax"), args.load)
+            robust_model = models.get_robust_model(args)
+            robust.robustify(args, robust_model, train_ds, iters=1000, alpha=0.1)
+        else:
+            print(args.model)
+
+>>>>>>> 71f5dd9197c4d1e01a17496f08cd286e7dcf6275
 
         if args.train is True:
             train.train(args, train_dataset, val_dataset)
