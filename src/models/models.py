@@ -3,8 +3,9 @@ from tensorflow import keras as K
 from tensorflow.keras.utils import get_source_inputs
 import segmentation_models as sm
 from segmentation_models import get_preprocessing
+
 K.backend.set_image_data_format('channels_last')
-SM_FRAMEWORK=tf.keras
+SM_FRAMEWORK = tf.keras
 sm.set_framework('tf.keras')
 
 
@@ -31,6 +32,7 @@ def initialize_std_model(args, classes, activation):
 
     return model
 
+
 def init_adv_model(args, classes, activation):
     dice_loss = args.training_loss1
     focal_loss = args.training_loss2
@@ -53,6 +55,13 @@ def init_adv_model(args, classes, activation):
     #     metrics=[sm.metrics.IOUScore(threshold=0.5), sm.metrics.FScore(threshold=0.5), "accuracy"]
     # )
     return model
+
+
+def get_robust_model(args):
+    representation = args.adv_model.layers[-6]
+    robustifier = tf.keras.Model(inputs=args.adv_model.layers[0].input,
+                                 outputs=representation.output)
+    return robustifier
 
 
 def load_weights(path, model):

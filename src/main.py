@@ -6,6 +6,7 @@ from util import commandline as cl, logger, tools
 from data import make_dataset as md
 from models import models, Std_train, adversarial_train as adv_train
 import attacks
+from features import build_robustifiers as robust
 import segmentation_models as sm
 import tensorflow
 
@@ -46,12 +47,16 @@ def main():
         args.lr_scheduler1 = class_
 
     with logger.LoggingBlock("Setup Model", emph=True):
-        if args.train == "Std_train":
+        if args.mode == "Std_train":
             args.std_model = models.initialize_std_model(args, 10, "softmax")
             Std_train.train(args, train_dataset, val_dataset)
-        elif args.train == "Adv_train":
-            args.adv_model = models.initialize_std_model(args.model, 10, "softmax")
+        elif args.mode == "Adv_train":
+            args.adv_model = models.init_adv_model(args.model, 10, "softmax")
             adv_train.adversarial_training(args, train_dataset, val_dataset, attacks.pgd_l2_adv, epsilon=0.5, num_iter=7, alpha=0.5 / 5, epochs=25000 // 391)
+        elif args.mode == "Robustfier":
+            args.adv_model = tools.load_model(models.init_adv_model(args.model, 10, "softmax"), args.load)
+            robust_model = models.get_robust_model(args)
+            robust.robustify(args, robust_model, train_ds, iters=1000, alpha=0.1)
         else:
             print(args.model)
 
