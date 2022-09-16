@@ -1,30 +1,37 @@
 import tensorflow as tf
 from tensorflow import keras as K
-K.backend.set_image_data_format('channels_last')
 from tensorflow.keras.utils import get_source_inputs
-
 import segmentation_models as sm
-<<<<<<< HEAD
-SM_FRAMEWORK=tf.keras
-=======
 from segmentation_models import get_preprocessing
 
 K.backend.set_image_data_format('channels_last')
 SM_FRAMEWORK = tf.keras
->>>>>>> 71f5dd9197c4d1e01a17496f08cd286e7dcf6275
 sm.set_framework('tf.keras')
-from segmentation_models import get_preprocessing
 
 
-
-def initialize_std_model(backbone, classes, activation):
-    # BACKBONE = 'efficientnetb3' 'resnet50'
-    preprocess_input = get_preprocessing(backbone)
-    model = sm.Unet(BACKBONE ,input_shape=(128, 128, 3),classes=classes,activation=activation, encoder_weights='imagenet')
+def get_model(args, classes, activation):
+    model = sm.Unet(args.model, input_shape=(args.img_size, args.img_size, 3), classes=classes, activation=activation,
+                    encoder_weights='imagenet')
     return model
 
-<<<<<<< HEAD
-=======
+
+def initialize_std_model(args, classes, activation):
+    # BACKBONE = 'efficientnetb3' 'resnet50'
+    preprocess_input = get_preprocessing(args.model)
+    model = get_model(args, classes, activation)
+
+    dice_loss = args.training_loss1
+    focal_loss = args.training_loss2
+    total_loss = dice_loss + (1 * focal_loss)
+    # model = args.stdmodel
+    model.compile(
+        K.optimizers.Adam(0.0001),
+        loss=total_loss,
+        metrics=[sm.metrics.IOUScore(), sm.metrics.FScore()],
+    )
+
+    return model
+
 
 def init_adv_model(args, classes, activation):
     dice_loss = args.training_loss1
@@ -57,7 +64,6 @@ def get_robust_model(args):
     return robustifier
 
 
->>>>>>> 71f5dd9197c4d1e01a17496f08cd286e7dcf6275
 def load_weights(path, model):
     model.load_weights(path)
     return model
