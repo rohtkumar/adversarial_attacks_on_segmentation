@@ -7,10 +7,9 @@ BATCH_SIZE=4
 
 #resnet50 or efficientnetb3
 MODEL=$1
-TRAIN_TYPE=$2 # Std_train, Adv_train
 # save best Model checkpoint path
 TIME=$(date +"%Y%m%d-%H%M%S")
-SAVE_PATH="../data/$MODEL$ALIAS$TIME"
+SAVE_PATH="$SOURCE_HOME/data/$MODEL$ALIAS$TIME"
 CHECKPOINT="/thesis/rohkumar/Checkpoint/"
 
 Train_Image_Augmentation=True
@@ -28,9 +27,8 @@ python ../src/main.py \
 --lr_scheduler="PiecewiseConstantDecay"  \
 --model=$MODEL \
 --num_workers=2 \
---train=$TRAIN_TYPE \
+--train=True \
 --model_name=$MODEL \
---img_size=128 \
 --early_stopping=True \
 --early_stopping_patience=10 \
 --optimizer=Adam \

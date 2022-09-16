@@ -22,7 +22,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
-
+/src/logs/
 *.h5
 notebooks/*.h5
 

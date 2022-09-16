@@ -8,7 +8,7 @@ import segmentation_models as sm
 sm.set_framework('tf.keras')
 K.backend.set_image_data_format('channels_last')
 
-def adversarial_training(model, train_ds, test_ds, train_attack, test_attack=None, epochs=5, verbose=True, test_kwargs=None, **kwargs):
+def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None, epochs=5, verbose=True, test_kwargs=None, **kwargs):
     """Runs the "adversarial" training loop described in Ilyas et al. (2019)
     
     Adversarial training allows for two separate attacks, one during training and a separate one during
@@ -25,9 +25,11 @@ def adversarial_training(model, train_ds, test_ds, train_attack, test_attack=Non
                 will return the train / test accuracies at the end of training. 
                 Default: True"""
 
-    with logger.LoggingBlock("Start Adversarial Training", emph=True):
+    with logger.LoggingBlock("Start Adversarial Training with", emph=True):
+        model=args.adv_model
         # Create train and test functions wrapped
         if train_attack is not None:
+            print(train_attack)
             train_attack_tf = tf.function(train_attack)
         if test_attack is not None:
             test_attack_tf = tf.function(test_attack)
@@ -47,10 +49,10 @@ def adversarial_training(model, train_ds, test_ds, train_attack, test_attack=Non
                 else:
                     Xd = X
                 # Train model on adversarially perturbed data
-                l, l1, acc, other_returned_val = model.train_on_batch(Xd, y)
+                l, l1, other_returned_val = model.train_on_batch(Xd, y)
     #             print(acc)
                 train_losses.append(l)
-                train_accs.append(acc)
+                train_accs.append(l1)
 
             test_losses = []
             test_accs = []
@@ -70,10 +72,10 @@ def adversarial_training(model, train_ds, test_ds, train_attack, test_attack=Non
                     # when test_attack is not specified
                     Xdtest = Xtest
 
-                l, l1, acc, other_returned_val = model.test_on_batch(Xdtest, ytest)
+                l, l1, other_returned_val = model.test_on_batch(Xdtest, ytest)
     #             print({l}, {acc}, {other_returned_val})
                 test_losses.append(l)
-                test_accs.append(acc)
+                test_accs.append(l1)
 
             train_loss = sum(train_losses) / len(train_losses)
             train_acc = sum(train_accs) / len(train_accs)
