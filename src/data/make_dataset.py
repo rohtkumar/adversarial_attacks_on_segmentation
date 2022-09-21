@@ -3,7 +3,7 @@ from util import parsing as parse
 import logging
 log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 logging.basicConfig(level=logging.INFO, format=log_fmt)
-
+# tf.data.experimental.AUTOTUNE
 AUTOTUNE = tf.data.AUTOTUNE
 
 def get_dataset(dataset_path, img_size, batch_size, buffer_size):
@@ -79,8 +79,6 @@ def get_cityscape_dataset(dataset_path, img_size, batch_size, buffer_size):
     dataset['val'] = dataset['val'].repeat()
     dataset['val'] = dataset['val'].batch(batch_size)
     dataset['val'] = dataset['val'].prefetch(buffer_size=AUTOTUNE)
-    # result = dataset['val'].apply(tf.data.experimental.assert_cardinality(288))
-    # print(len(result))
     return dataset['train'], dataset['val'], dataset['test']
 
 def get_robust_dataset(robust_train, orig_labels, batch_size):
