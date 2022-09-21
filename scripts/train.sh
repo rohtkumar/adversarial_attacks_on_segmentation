@@ -1,6 +1,6 @@
 # !/bin/bash
 
-DATA_HOME="../../dataset/images/"
+DATA_HOME="../../citysacpe/gtFine/"
 SOURCE_HOME="../adversarial_attacks_on_segmentation"
 BATCH_SIZE=4
 

@@ -1,3 +1,5 @@
+from os import listdir
+
 import tensorflow as tf
 from tensorflow import keras as K
 K.backend.set_image_data_format('channels_last')
@@ -33,6 +35,37 @@ def parse_image(img_path: str) -> dict:
 
     
     mask_path = tf.strings.regex_replace(img_path, "images", "masks")
+    mask = tf.io.read_file(mask_path)
+    # The masks contain a class index for each pixels
+    mask = tf.image.decode_png(mask, channels=1)
+    # Since 255 exist, changing it with 0
+    mask = tf.where(mask == 255, np.dtype('uint8').type(0), mask)
+    return {'image': image, 'segmentation_mask': mask}
+
+
+def parse_cityscape_image(img_path: str) -> dict:
+    """Load an image and its annotation (mask) and returning
+    a dictionary.
+
+    Parameters
+    ----------
+    img_path : str
+        Image (not the mask) location.
+        For one Image path:
+        .../dataset/images/image1.jpg
+        Its corresponding annotation path is:
+        .../dataset/masks/masks1.png
+
+    Returns
+    -------
+    dict
+        Dictionary mapping an image and its mask.
+    """
+    image = tf.io.read_file(img_path)
+    image = tf.image.decode_png(image, channels=3)
+    image = tf.image.convert_image_dtype(image, tf.uint8)
+
+    mask_path = tf.strings.regex_replace(img_path, "gtFine", "leftImg8bit/leftImg8bit")
     mask = tf.io.read_file(mask_path)
     # The masks contain a class index for each pixels
     mask = tf.image.decode_png(mask, channels=1)
@@ -136,3 +169,6 @@ def robust_preprocess(img, label):
     img = tf.image.random_crop(img, size=[32, 32, 3])
     img = tf.image.stateless_random_flip_left_right(img, (15, 13))
     return img, label
+
+def get_image_paths(dir):
+    return sorted([dir + path for path in listdir(dir)])

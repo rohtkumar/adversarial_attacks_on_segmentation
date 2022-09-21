@@ -1,7 +1,6 @@
 import os
 import logging
 import colorama
-import pandas as pd
 from util import commandline as cl, logger, tools
 from data import make_dataset as md
 from models import models, Std_train, adversarial_train as adv_train
