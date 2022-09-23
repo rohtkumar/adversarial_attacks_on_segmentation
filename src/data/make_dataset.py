@@ -1,6 +1,7 @@
 import tensorflow as tf
 from util import parsing as parse
 import logging
+import cityscapesscripts as cs
 log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 logging.basicConfig(level=logging.INFO, format=log_fmt)
 # tf.data.experimental.AUTOTUNE
