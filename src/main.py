@@ -58,7 +58,7 @@ def main():
         elif args.mode == "Robustfier":
             args.adv_model = tools.load_model(models.init_adv_model(args.model, 10, "softmax"), args.load)
             robust_model = models.get_robust_model(args)
-            robust.robustify(args, robust_model, train_ds, iters=1000, alpha=0.1)
+            robust.robustify(args, robust_model, train_dataset, iters=1000, alpha=0.1)
         else:
             print(args.model)
 

@@ -55,8 +55,6 @@ def get_cityscape_dataset(dataset_path, img_size, batch_size, buffer_size):
     test_dataset = test_dataset.map(parse.parse_cityscape_image)
     val_dataset = val_dataset.map(parse.parse_cityscape_image)
 
-    print(test_dataset)
-
     TRAINSET_SIZE = len(train_dataset)
     VALSET_SIZE = len(val_dataset)
     TESTSET_SIZE = len(test_dataset)
@@ -78,21 +76,13 @@ def get_cityscape_dataset(dataset_path, img_size, batch_size, buffer_size):
     dataset['val'] = dataset['val'].batch(batch_size)
     dataset['val'] = dataset['val'].prefetch(buffer_size=AUTOTUNE)
 
-<<<<<<< Updated upstream
-    dataset['val'] = dataset['val'].map(parse.load_image_test)
-    dataset['val'] = dataset['val'].repeat()
-    dataset['val'] = dataset['val'].batch(batch_size)
-    dataset['val'] = dataset['val'].prefetch(buffer_size=AUTOTUNE)
-    return dataset['train'], dataset['val'], dataset['test']
-=======
     dataset['test'] = dataset['test'].map(parse.load_image_test)
     dataset['test'] = dataset['test'].repeat()
     dataset['test'] = dataset['test'].batch(batch_size)
     dataset['test'] = dataset['test'].prefetch(buffer_size=AUTOTUNE)
-    # result = dataset['val'].apply(tf.data.experimental.assert_cardinality(288))
-    # print(len(result))
+
     return dataset['train'].apply(tf.data.experimental.assert_cardinality(2975)), dataset['val'].apply(tf.data.experimental.assert_cardinality(500)), dataset['test'].apply(tf.data.experimental.assert_cardinality(1525))
->>>>>>> Stashed changes
+
 
 def get_robust_dataset(robust_train, orig_labels, batch_size):
     img = tf.concat(robust_train, axis=0)
