@@ -11,6 +11,7 @@ import tensorflow
 
 
 def main():
+    os.environ["CUDA_VISIBLE_DEVICES"] = "2"
     root_home = os.path.dirname(os.path.realpath(__file__))
     # print("file path %s" %root_home)
 #     os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -33,7 +34,9 @@ def main():
             logging.info('{}{}: {}{}'.format(color, argument, value, reset))
     
     tools.set_seed(42)
-    train_dataset, val_dataset = md.get_dataset(args.dataset_root, args.img_size, args.batch_size, 500)
+    # train_dataset, val_dataset = md.get_dataset(args.dataset_root, args.img_size, args.batch_size, 500)
+    train_dataset, val_dataset, test_dataset = md.get_cityscape_dataset(args.dataset_root, args.img_size,
+                                                                        args.batch_size, 500)
 
     with logger.LoggingBlock("Setup Hyperparameters", emph=True):
         class_ = tools.getClass("segmentation_models.losses", args.training_loss1)
@@ -47,7 +50,7 @@ def main():
 
     with logger.LoggingBlock("Setup Model", emph=True):
         if args.mode == "Std_train":
-            args.std_model = models.initialize_std_model(args, 10, "softmax")
+            args.std_model = models.initialize_std_model(args, 20, "softmax")
             Std_train.train(args, train_dataset, val_dataset)
         elif args.mode == "Adv_train":
             args.adv_model = models.init_adv_model(args.model, 10, "softmax")

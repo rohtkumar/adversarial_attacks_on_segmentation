@@ -15,8 +15,9 @@ def robust_preprocess(img, label):
     img = tf.image.stateless_random_flip_left_right(img, (15, 13))
     return img, label
 
-%%time
+
 def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
+    #%%time
     with logger.LoggingBlock("Robustifier started", emph=True):
         robust_train = []
         orig_labels = []

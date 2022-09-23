@@ -30,4 +30,5 @@ def train(args, train_dataset, val_dataset):
                                                save_weights_only=False)
         ]
         results = args.std_model.fit(train_dataset, epochs=100, steps_per_epoch = len(train_dataset) // args.batch_size, validation_steps= len(val_dataset) // args.batch_size,
-           validation_data=val_dataset, callbacks=callbacks)
+          validation_data=val_dataset, callbacks=callbacks)
+

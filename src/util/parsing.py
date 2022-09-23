@@ -65,7 +65,8 @@ def parse_cityscape_image(img_path: str) -> dict:
     image = tf.image.decode_png(image, channels=3)
     image = tf.image.convert_image_dtype(image, tf.uint8)
 
-    mask_path = tf.strings.regex_replace(img_path, "gtFine", "leftImg8bit/leftImg8bit")
+    mask_path = tf.strings.regex_replace(img_path, "gtFine_color", "leftImg8bit")
+    mask_path = tf.strings.regex_replace(mask_path, "gtFine", "leftImg8bit/leftImg8bit")
     mask = tf.io.read_file(mask_path)
     # The masks contain a class index for each pixels
     mask = tf.image.decode_png(mask, channels=1)
