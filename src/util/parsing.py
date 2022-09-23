@@ -74,6 +74,14 @@ def parse_cityscape_image(img_path: str) -> dict:
     mask = tf.where(mask == 255, np.dtype('uint8').type(0), mask)
     return {'image': image, 'segmentation_mask': mask}
 
+def encode_segmap(self, mask):
+    for _voidc in self.void_classes:
+        mask[mask == _voidc] = self.ignore_index
+    for _validc in self.valid_classes:
+        mask[mask == _validc] = self.class_map[_validc]
+    return mask
+
+
 @tf.function
 def normalize(input_image: tf.Tensor, input_mask: tf.Tensor) -> tuple:
     """Rescale the pixel values of the images between 0.0 and 1.0
@@ -91,8 +99,17 @@ def normalize(input_image: tf.Tensor, input_mask: tf.Tensor) -> tuple:
     tuple
         Normalized image and its masks.
     """
+    self.void_classes = [0, 1, 2, 3, 4, 5, 6, 9, 10, 14, 15, 16, 18, 29, 30, -1]
+
+    # these are 19
+    self.valid_classes = [7, 8, 11, 12, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 31, 32, 33]
+
     input_image = tf.cast(input_image, tf.float32) / 255.0
-    
+
+    self.ignore_index = 250
+
+    # dictionary of valid classes 7:0, 8:1, 11:2
+    self.class_map = dict(zip(self.valid_classes, range(19)))
     #added later, verify and check wheter to use normalize on masks
 #     input_mask = tf.cast(input_mask, tf.float32) / 255.0
     return input_image, input_mask
