@@ -5,7 +5,7 @@ import cityscapesscripts as cs
 log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 logging.basicConfig(level=logging.INFO, format=log_fmt)
 # tf.data.experimental.AUTOTUNE
-AUTOTUNE = tf.data.AUTOTUNE
+AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 def get_dataset(dataset_path, img_size, batch_size, buffer_size):
     logger = logging.getLogger(__name__)

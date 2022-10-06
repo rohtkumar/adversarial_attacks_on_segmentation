@@ -2,6 +2,7 @@ from os import listdir
 
 import tensorflow as tf
 from tensorflow import keras as K
+# from tensorflow.keras.experimental.preprocessing import Normalization
 K.backend.set_image_data_format('channels_last')
 
 import numpy as np
@@ -71,7 +72,7 @@ def parse_cityscape_image(img_path: str) -> dict:
     # The masks contain a class index for each pixels
     mask = tf.image.decode_png(mask, channels=1)
     # Since 255 exist, changing it with 0
-    mask = tf.where(mask == 255, np.dtype('uint8').type(0), mask)
+    # mask = tf.where(mask == 255, np.dtype('uint8').type(0), mask)
     return {'image': image, 'segmentation_mask': mask}
 
 def encode_segmap(mask):
@@ -109,15 +110,21 @@ def normalize(input_image: tf.Tensor, input_mask: tf.Tensor) -> tuple:
     tuple
         Normalized image and its masks.
     """
-    mean = [123.675, 116.28, 103.53]
-    std = [58.395, 57.12, 57.375]
-    input_image = tf.cast(input_image, tf.float32) / 255.0
-    for channel in range(3):
-        input_image[:, :, channel] = (input_image[:, :, channel] - mean[channel]) / std[channel]
+    # transforms = Normalization(mean=[123.675, 116.28, 103.53],
+    #                       variance=[np.square(58.395),
+    #                                 np.square(57.12),
+    #                                 np.square(57.375)])
+    # mean = [123.675, 116.28, 103.53]
+    # std = [58.395, 57.12, 57.375]
+    # input_image = tf.cast(input_image, tf.float32) / 255.0
+    # for channel in range(3):
+    #     input_image[:, :, channel] = (input_image[:, :, channel] - mean[channel]) / std[channel]
 
-    # input_image = tf.cast(input_image, tf.float32)
-    input_mask = encode_segmap(np.array(input_mask, dtype=np.unit8))
-    input_mask = tf.convert_to_tensor(input_mask, dtype=tf.int64)
+    input_image = tf.cast(input_image, tf.float32) / 255.0
+    # input_image = transforms(input_image)
+    # arry = np.array(input_mask, dtype=np.uint8)
+    # input_mask = encode_segmap(arry)
+    # input_mask = tf.convert_to_tensor(input_mask, dtype=tf.int64)
 #     input_mask = tf.cast(input_mask, tf.float32) / 255.0
     return input_image, input_mask
    
@@ -148,13 +155,13 @@ def load_image_train(datapoint: dict) -> tuple:
     input_image = tf.image.resize(datapoint['image'], (IMG_SIZE, IMG_SIZE))
     input_mask = tf.image.resize(datapoint['segmentation_mask'], (IMG_SIZE, IMG_SIZE))
 
-    
-    if tf.random.uniform(()) > 0.5:
-          input_image = tf.image.flip_left_right(input_image)
-          input_mask = tf.image.flip_left_right(input_mask)
+    print(tf.__version__)
+    # if tf.random.uniform(()) > 0.5:
+    input_image = tf.image.flip_left_right(input_image)
+    input_mask = tf.image.flip_left_right(input_mask)
 
     input_image, input_mask = normalize(input_image, input_mask)
-    print(input_image)
+    # print(input_image)
     return input_image, input_mask   
 
 @tf.function
