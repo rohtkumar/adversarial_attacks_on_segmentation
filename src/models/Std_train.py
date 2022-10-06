@@ -29,6 +29,6 @@ def train(args, train_dataset, val_dataset):
             tf.keras.callbacks.ModelCheckpoint('best_' + args.model_name + '_unet.h5', verbose=1, save_best_only=True,
                                                save_weights_only=False)
         ]
-        # results = args.std_model.fit(train_dataset, epochs=100, steps_per_epoch = len(train_dataset) // args.batch_size, validation_steps= len(val_dataset) // args.batch_size,
-        #   validation_data=val_dataset, callbacks=callbacks)
+        results = args.std_model.fit(train_dataset, epochs=100, steps_per_epoch = len(train_dataset) // args.batch_size, validation_steps= len(val_dataset) // args.batch_size,
+          validation_data=val_dataset, callbacks=callbacks)
 

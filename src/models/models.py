@@ -26,8 +26,9 @@ def initialize_std_model(args, classes, activation):
     # model = args.stdmodel
     model.compile(
         K.optimizers.Adam(0.0001),
-        loss=total_loss,
-        metrics=[sm.metrics.IOUScore(), sm.metrics.FScore()],
+        # loss=total_loss,
+        loss=tf.keras.losses.SparseCategoricalCrossentropy()
+        metrics=[sm.metrics.IOUScore(), 'accuracy'],
     )
 
     return model
