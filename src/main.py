@@ -11,7 +11,7 @@ import tensorflow
 
 
 def main():
-    os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     root_home = os.path.dirname(os.path.realpath(__file__))
     # print("file path %s" %root_home)
 #     os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -33,7 +33,7 @@ def main():
             color = colorama.Fore.CYAN
             logging.info('{}{}: {}{}'.format(color, argument, value, reset))
     
-    tools.set_seed(42)
+    tools.set_seed(25)
     train_dataset, val_dataset = md.get_dataset(args.dataset_root, args.img_size, args.batch_size, 500)
     # train_dataset, val_dataset, test_dataset = md.get_cityscape_dataset(args.dataset_root, args.img_size,
     #                                                                     args.batch_size, 500)
@@ -49,13 +49,13 @@ def main():
         args.lr_scheduler1 = class_
 
     with logger.LoggingBlock("Setup Model", emph=True):
-        if args.mode == "Std_train":
+        if args.mode == "std":
             args.std_model = models.initialize_std_model(args, 10, "softmax")
             Std_train.train(args, train_dataset, val_dataset)
-        elif args.mode == "Adv_train":
+        elif args.mode == "adversarial":
             args.adv_model = models.init_adv_model(args.model, 10, "softmax")
             adv_train.adversarial_training(args, train_dataset, val_dataset, attacks.pgd_l2_adv, epsilon=0.5, num_iter=7, alpha=0.5 / 5, epochs=25000 // 391)
-        elif args.mode == "Robustfier":
+        elif args.mode == "robustfier":
             args.adv_model = tools.load_model(models.init_adv_model(args.model, 10, "softmax"), args.load)
             robust_model = models.get_robust_model(args)
             robust.robustify(args, robust_model, train_dataset, iters=1000, alpha=0.1)

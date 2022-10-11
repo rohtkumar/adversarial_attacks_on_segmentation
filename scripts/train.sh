@@ -3,7 +3,7 @@
 #DATA_HOME="../../citysacpe/gtFine/"
 DATA_HOME="../../dataset/images/"
 SOURCE_HOME="../adversarial_attacks_on_segmentation"
-BATCH_SIZE=4
+BATCH_SIZE=2
 
 
 #resnet50 or efficientnetb3
@@ -23,7 +23,7 @@ Valid_Image_Augmentation=False
 Valid_Loss_Function="BCELoss"
 
 
-python ../src/main.py \
+python3 ../src/main.py \
 --batch_size=$BATCH_SIZE \
 --checkpoint=$CHECKPOINT \
 --lr_scheduler="PiecewiseConstantDecay"  \
@@ -40,7 +40,6 @@ python ../src/main.py \
 --load=$LOAD_PATH \
 --start_epoch=1 \
 --total_epochs=10 \
---file_name=$FILE_NAME \
 --dataset_root=$DATA_HOME \
 --source_home=$SOURCE_HOME \
 --training_augmentation=$Train_Image_Augmentation \

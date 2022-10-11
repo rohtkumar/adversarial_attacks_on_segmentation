@@ -6,10 +6,11 @@ from tensorflow import keras as K
 K.backend.set_image_data_format('channels_last')
 
 import numpy as np
-IMG_SIZE=128
+IMG_SIZE = 128
 
 def define_img_size(img_size):
-    IMG_SIZE=img_size
+    global IMG_SIZE
+    IMG_SIZE = img_size
     # print(IMG_SIZE)
 
 def parse_image(img_path: str) -> dict:
@@ -40,7 +41,7 @@ def parse_image(img_path: str) -> dict:
     # The masks contain a class index for each pixels
     mask = tf.image.decode_png(mask, channels=1)
     # Since 255 exist, changing it with 0
-    mask = tf.where(mask == 255, np.dtype('uint8').type(0), mask)
+    mask = tf.where(mask == 255, np.dtype('uint8').type(8), mask)
     return {'image': image, 'segmentation_mask': mask}
 
 
