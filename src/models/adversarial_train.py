@@ -1,3 +1,5 @@
+import os
+
 import tensorflow as tf
 from tensorflow import keras as K
 from util import logger
@@ -27,10 +29,12 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
 
     with logger.LoggingBlock("Start Adversarial Training ", emph=True):
         model = args.adv_model
+        saved_model = os.path.join(args.save, 'adv_' + args.model_name + '_unet.h5')
         train_ds = train_ds.apply(tf.data.experimental.assert_cardinality(1153))
-
-        progbar_train = tf.keras.utils.Progbar(len(train_ds) // args.batch_size)
-        progbar_test = tf.keras.utils.Progbar(len(test_ds) // args.batch_size)
+        batch_train = len(train_ds) // args.batch_size
+        batch_test = len(test_ds) // args.batch_size
+        progbar_train = tf.keras.utils.Progbar(batch_train)
+        progbar_test = tf.keras.utils.Progbar(batch_test)
         # Create train and test functions wrapped
         if train_attack is not None:
             train_attack_tf = tf.function(train_attack)
@@ -40,16 +44,13 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
         metrics_names = ['loss', 'IOU', 'acc']
 
         for n in range(epochs):
-
             t = time.time()
             train_losses = []
             train_accs = []
-            batch_train = len(train_ds) // args.batch_size
-            batch_test = len(test_ds) // args.batch_size
-            # logging.info(batch)
+
             for i, b in enumerate(train_ds.take(batch_train)):
                 X, y = b
-    #             print("here")
+
                 # Create adversarially perturbed training data
                 if train_attack is not None:
                     delta = train_attack_tf(model, X, y, **kwargs)
@@ -58,8 +59,6 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
                     Xd = X
                 # Train model on adversarially perturbed data
                 loss, iou, acc = model.train_on_batch(Xd, y)
-    #             print(acc)
-    #             tf.print(l1)
                 train_losses.append(loss)
                 train_accs.append(acc)
                 values = [('loss', loss),('IOU', iou), ('acc', acc) ]
@@ -99,7 +98,5 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
             if verbose:
                 logging.info(f"Epoch {n}/{epochs}, Time: {(time.time()-t):0.2f} -- Train Loss: {train_loss:0.2f}, \
                     Train Acc: {train_acc:0.2f}, Test Loss: {test_loss:0.2f}, Test Acc: {test_acc:0.2f}")
-
-        # Return final train and test losses
-        if verbose == False:
-            return {'train_loss': train_loss, 'train_acc': train_acc, 'test_loss': test_loss, 'test_acc': test_acc}
+        logger.info("Adversarial Training completed..... Saving model.")
+        model.save_weights(saved_model)
