@@ -28,26 +28,26 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
     with logger.LoggingBlock("Start Adversarial Training ", emph=True):
         model = args.adv_model
         train_ds = train_ds.apply(tf.data.experimental.assert_cardinality(1153))
-        # iterator = train_ds.make_initializable_iterator()
-        # tf.add_to_collection(tf.GraphKeys.TABLE_INITIALIZERS, iterator.initializer)
-        progbar_train = tf.keras.utils.Progbar(len(train_ds))
-        progbar_test = tf.keras.utils.Progbar(len(test_ds))
+
+        progbar_train = tf.keras.utils.Progbar(len(train_ds) // args.batch_size)
+        progbar_test = tf.keras.utils.Progbar(len(test_ds) // args.batch_size)
         # Create train and test functions wrapped
         if train_attack is not None:
-            print(train_attack)
             train_attack_tf = tf.function(train_attack)
         if test_attack is not None:
             test_attack_tf = tf.function(test_attack)
 
-        metrics_names = ['acc', 'IOU']
+        metrics_names = ['loss', 'IOU', 'acc']
 
         for n in range(epochs):
-    #         print(n)
+
             t = time.time()
             train_losses = []
             train_accs = []
-
-            for i, b in enumerate(train_ds//args.batch_size):
+            batch_train = len(train_ds) // args.batch_size
+            batch_test = len(test_ds) // args.batch_size
+            # logging.info(batch)
+            for i, b in enumerate(train_ds.take(batch_train)):
                 X, y = b
     #             print("here")
                 # Create adversarially perturbed training data
@@ -57,17 +57,17 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
                 else:
                     Xd = X
                 # Train model on adversarially perturbed data
-                l, l1, other_returned_val = model.train_on_batch(Xd, y)
+                loss, iou, acc = model.train_on_batch(Xd, y)
     #             print(acc)
     #             tf.print(l1)
-                train_losses.append(l)
-                train_accs.append(l1)
-                values = [('acc', l1), ('IOU', l)]
+                train_losses.append(loss)
+                train_accs.append(acc)
+                values = [('loss', loss),('IOU', iou), ('acc', acc) ]
                 progbar_train.update(i, values=values)
 
             test_losses = []
             test_accs = []
-            for i, vb in enumerate(test_ds//args.batch_size):
+            for i, vb in enumerate(test_ds.take(batch_test)):
                 Xtest, ytest = vb
 
                 # When attack is specified (ie not None), apply
@@ -83,10 +83,11 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
                     # when test_attack is not specified
                     Xdtest = Xtest
 
-                l, l1, other_returned_val = model.test_on_batch(Xdtest, ytest)
+                loss, iou, acc = model.test_on_batch(Xdtest, ytest)
     #             print({l}, {acc}, {other_returned_val})
-                test_losses.append(l)
-                test_accs.append(l1)
+                test_losses.append(loss)
+                test_accs.append(acc)
+                values = [('loss', loss), ('IOU', iou), ('acc', acc)]
                 progbar_test.update(i)
 
             train_loss = sum(train_losses) / len(train_losses)
