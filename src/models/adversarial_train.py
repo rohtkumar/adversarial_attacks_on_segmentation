@@ -25,8 +25,13 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
                 will return the train / test accuracies at the end of training. 
                 Default: True"""
 
-    with logger.LoggingBlock("Start Adversarial Training with", emph=True):
-        model=args.adv_model
+    with logger.LoggingBlock("Start Adversarial Training ", emph=True):
+        model = args.adv_model
+        train_ds = train_ds.apply(tf.data.experimental.assert_cardinality(1153))
+        # iterator = train_ds.make_initializable_iterator()
+        # tf.add_to_collection(tf.GraphKeys.TABLE_INITIALIZERS, iterator.initializer)
+        progbar_train = tf.keras.utils.Progbar(len(train_ds))
+        progbar_test = tf.keras.utils.Progbar(len(test_ds))
         # Create train and test functions wrapped
         if train_attack is not None:
             print(train_attack)
@@ -34,12 +39,15 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
         if test_attack is not None:
             test_attack_tf = tf.function(test_attack)
 
+        metrics_names = ['acc', 'IOU']
+
         for n in range(epochs):
     #         print(n)
             t = time.time()
             train_losses = []
             train_accs = []
-            for b in train_ds:
+
+            for i, b in enumerate(train_ds//args.batch_size):
                 X, y = b
     #             print("here")
                 # Create adversarially perturbed training data
@@ -51,12 +59,15 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
                 # Train model on adversarially perturbed data
                 l, l1, other_returned_val = model.train_on_batch(Xd, y)
     #             print(acc)
+    #             tf.print(l1)
                 train_losses.append(l)
                 train_accs.append(l1)
+                values = [('acc', l1), ('IOU', l)]
+                progbar_train.update(i, values=values)
 
             test_losses = []
             test_accs = []
-            for vb in test_ds:
+            for i, vb in enumerate(test_ds//args.batch_size):
                 Xtest, ytest = vb
 
                 # When attack is specified (ie not None), apply
@@ -76,6 +87,7 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
     #             print({l}, {acc}, {other_returned_val})
                 test_losses.append(l)
                 test_accs.append(l1)
+                progbar_test.update(i)
 
             train_loss = sum(train_losses) / len(train_losses)
             train_acc = sum(train_accs) / len(train_accs)

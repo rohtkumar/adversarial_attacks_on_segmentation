@@ -3,7 +3,7 @@
 #DATA_HOME="../../citysacpe/gtFine/"
 DATA_HOME="../../dataset/images/"
 SOURCE_HOME="../adversarial_attacks_on_segmentation"
-BATCH_SIZE=2
+BATCH_SIZE=4
 
 
 #resnet50 or efficientnetb3
@@ -12,7 +12,7 @@ MODE=$2 # Std_train, Adv_train
 LOAD_PATH=$3
 # save best Model checkpoint path
 TIME=$(date +"%Y%m%d-%H%M%S")
-SAVE_PATH="../data/$MODEL$TIME"
+SAVE_PATH="../data/$MODEL$MODE$TIME"
 CHECKPOINT="/thesis/rohkumar/Checkpoint/"
 
 Train_Image_Augmentation=True

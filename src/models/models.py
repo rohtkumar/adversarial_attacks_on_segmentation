@@ -35,14 +35,14 @@ def initialize_std_model(args, classes, activation):
 
 
 def init_adv_model(args, classes, activation):
-    dice_loss = args.training_loss1
-    focal_loss = args.training_loss2
-    total_loss = dice_loss + (1 * focal_loss)
+    # dice_loss = args.training_loss1
+    # focal_loss = args.training_loss2
+    # total_loss = dice_loss + (1 * focal_loss)
     model = get_model(args, classes, activation)
     model.compile(
         K.optimizers.Adam(0.0001),
-        loss=total_loss,
-        metrics=[sm.metrics.IOUScore(threshold=0.5), sm.metrics.FScore(threshold=0.5)],
+        loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+        metrics=[sm.metrics.IOUScore(threshold=0.5), 'accuracy']
     )
     # boundaries = [15000, 20000]
     # values = [0.1, 0.01, 1e-3]

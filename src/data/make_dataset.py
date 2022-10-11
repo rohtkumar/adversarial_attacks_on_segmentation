@@ -26,7 +26,7 @@ def get_dataset(dataset_path, img_size, batch_size, buffer_size):
 
     dataset = {"train": train_dataset, "val": test_dataset}
 
-    dataset['train'] = dataset['train'].map(parse.load_image_train)
+    dataset['train'] = dataset['train'].map(parse.load_image_train, num_parallel_calls = AUTOTUNE)
     dataset['train'] = dataset['train'].shuffle(buffer_size=buffer_size, seed=42)
     dataset['train'] = dataset['train'].repeat()
     dataset['train'] = dataset['train'].batch(batch_size)
@@ -69,7 +69,7 @@ def get_cityscape_dataset(dataset_path, img_size, batch_size, buffer_size):
     dataset['train'] = dataset['train'].shuffle(buffer_size=buffer_size, seed=42)
     dataset['train'] = dataset['train'].repeat()
     dataset['train'] = dataset['train'].batch(batch_size)
-    dataset['train'] = dataset['train'].prefetch(buffer_size=AUTOTUNE)
+    # dataset['train'] = dataset['train'].prefetch(buffer_size=AUTOTUNE)
 
     dataset['val'] = dataset['val'].map(parse.load_image_test)
     dataset['val'] = dataset['val'].repeat()

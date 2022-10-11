@@ -156,10 +156,10 @@ def load_image_train(datapoint: dict) -> tuple:
     input_image = tf.image.resize(datapoint['image'], (IMG_SIZE, IMG_SIZE))
     input_mask = tf.image.resize(datapoint['segmentation_mask'], (IMG_SIZE, IMG_SIZE))
 
-    print(tf.__version__)
-    # if tf.random.uniform(()) > 0.5:
-    input_image = tf.image.flip_left_right(input_image)
-    input_mask = tf.image.flip_left_right(input_mask)
+    # print(tf.__version__)
+    if tf.random.uniform(()) > 0.5:
+        input_image = tf.image.flip_left_right(input_image)
+        input_mask = tf.image.flip_left_right(input_mask)
 
     input_image, input_mask = normalize(input_image, input_mask)
     # print(input_image)

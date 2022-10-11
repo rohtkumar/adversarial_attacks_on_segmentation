@@ -4,7 +4,7 @@ import colorama
 from util import commandline as cl, logger, tools
 from data import make_dataset as md
 from models import models, Std_train, adversarial_train as adv_train
-import attacks
+from attacks import attacks as at
 from features import build_robustifiers as robust
 import segmentation_models as sm
 import tensorflow
@@ -52,9 +52,9 @@ def main():
         if args.mode == "std":
             args.std_model = models.initialize_std_model(args, 10, "softmax")
             Std_train.train(args, train_dataset, val_dataset)
-        elif args.mode == "adversarial":
-            args.adv_model = models.init_adv_model(args.model, 10, "softmax")
-            adv_train.adversarial_training(args, train_dataset, val_dataset, attacks.pgd_l2_adv, epsilon=0.5, num_iter=7, alpha=0.5 / 5, epochs=25000 // 391)
+        elif args.mode == "adv":
+            args.adv_model = models.init_adv_model(args, 10, "softmax")
+            adv_train.adversarial_training(args, train_dataset, val_dataset, train_attack=at.pgd_l2_adv, epsilon=0.5, num_iter=7, alpha=0.5 / 5, epochs=25000 // 391)
         elif args.mode == "robustfier":
             args.adv_model = tools.load_model(models.init_adv_model(args.model, 10, "softmax"), args.load)
             robust_model = models.get_robust_model(args)
