@@ -2,7 +2,7 @@ import os
 
 import tensorflow as tf
 from tensorflow import keras as K
-from util import logger
+from util import logger, tools
 import logging
 import time
 SM_FRAMEWORK=tf.keras
@@ -35,6 +35,9 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
         batch_test = len(test_ds) // args.batch_size
         progbar_train = tf.keras.utils.Progbar(batch_train)
         progbar_test = tf.keras.utils.Progbar(batch_test)
+        patience = 10
+        wait = 0
+        best = 0
         # Create train and test functions wrapped
         if train_attack is not None:
             train_attack_tf = tf.function(train_attack)
@@ -95,8 +98,15 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
             test_loss = sum(test_losses) / len(test_losses)
             test_acc = sum(test_accs) / len(test_accs)
 
+            wait += 1
+            if test_loss > best:
+                best = test_loss
+                wait = 0
+            if wait >= patience:
+                break
+
             if verbose:
                 logging.info(f"Epoch {n}/{epochs}, Time: {(time.time()-t):0.2f} -- Train Loss: {train_loss:0.2f}, \
                     Train Acc: {train_acc:0.2f}, Test Loss: {test_loss:0.2f}, Test Acc: {test_acc:0.2f}")
         logging.info("Adversarial Training completed..... Saving model.")
-        model.save_weights(saved_model)
+        tools.save_model(model, saved_model)

@@ -72,6 +72,10 @@ def write2file(arguments_dict, filename):
 def save_model(model, path):
     model.save_weights(path)
 
+def save_dataset(dataset, path):
+    tf.data.experimental.save(dataset, path)
+
+
 def load_model(model, path):
     model.load_weights(path)
     return model

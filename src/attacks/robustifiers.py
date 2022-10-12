@@ -4,6 +4,9 @@ K.backend.set_image_data_format('channels_last')
 
 tf.random.set_seed(25)
 
+def norm(Z):
+    """Compute norms over all but the first dimension"""
+    return tf.norm(tf.reshape(Z, (Z.shape[0], -1)), axis=1)
 def single_pgd_step_robust(model, X, y, alpha, delta):
     with tf.GradientTape() as tape:
         tape.watch(delta)

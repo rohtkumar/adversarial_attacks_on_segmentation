@@ -54,9 +54,10 @@ def main():
             Std_train.train(args, train_dataset, val_dataset)
         elif args.mode == "adv":
             args.adv_model = models.init_adv_model(args, 10, "softmax")
-            adv_train.adversarial_training(args, train_dataset, val_dataset, train_attack=at.pgd_l2_adv, epsilon=0.5, num_iter=7, alpha=0.5 / 5, epochs=25000 // 391)
-        elif args.mode == "robustfier":
-            args.adv_model = tools.load_model(models.init_adv_model(args.model, 10, "softmax"), args.load)
+            adv_train.adversarial_training(args, train_dataset, val_dataset, train_attack=at.pgd_l2_adv, epsilon=0.5, num_iter=7, alpha=0.5 / 5, epochs=63)
+        elif args.mode == "robustifier":
+            args.adv_model = tools.load_model(models.init_adv_model(args, 10, "softmax"), args.load)
+            logging.info("Loading saved model")
             robust_model = models.get_robust_model(args)
             robust.robustify(args, robust_model, train_dataset, iters=1000, alpha=0.1)
         else:
@@ -66,3 +67,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+#../data/resnet50adv20221012-133716/adv_resnet50_unet.h5
