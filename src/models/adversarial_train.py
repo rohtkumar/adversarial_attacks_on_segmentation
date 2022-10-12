@@ -87,7 +87,7 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
                 test_losses.append(loss)
                 test_accs.append(acc)
                 values = [('loss', loss), ('IOU', iou), ('acc', acc)]
-                progbar_test.update(i)
+                progbar_test.update(i, values=values)
 
             train_loss = sum(train_losses) / len(train_losses)
             train_acc = sum(train_accs) / len(train_accs)
@@ -98,5 +98,5 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
             if verbose:
                 logging.info(f"Epoch {n}/{epochs}, Time: {(time.time()-t):0.2f} -- Train Loss: {train_loss:0.2f}, \
                     Train Acc: {train_acc:0.2f}, Test Loss: {test_loss:0.2f}, Test Acc: {test_acc:0.2f}")
-        logger.info("Adversarial Training completed..... Saving model.")
+        logging.info("Adversarial Training completed..... Saving model.")
         model.save_weights(saved_model)
