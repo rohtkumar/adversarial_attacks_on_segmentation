@@ -12,8 +12,8 @@ import logging
 
 def robust_preprocess(img, label):
     """Defines preprocessing / data augmentation for robust & nonrobust features"""
-    img = tf.image.resize_with_pad(img, 32+4, 32+4)
-    img = tf.image.random_crop(img, size=[32, 32, 3])
+    img = tf.image.resize_with_pad(img, 128+4, 128+4)
+    img = tf.image.random_crop(img, size=[128, 128, 3])
     img = tf.image.stateless_random_flip_left_right(img, (15, 13))
     return img, label
 
@@ -33,8 +33,8 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
         rand_batch = train_to_pull[start_rn][0]
         logging.info(f'Total batches are {batch_train}')
         start_time = time.time()
-        progbar_train = tf.keras.utils.Progbar(batch_train)
-        for i, (img_batch, label_batch) in enumerate(train_ds.take(batch_train)):
+        progbar_train = tf.keras.utils.Progbar(train_temp)
+        for i, (img_batch, label_batch) in enumerate(train_temp):
             inter_time = time.time()
 
             # For the last batch, it is smaller than batch_size and thus we match the size for the batch of initial images
