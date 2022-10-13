@@ -31,8 +31,9 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
         train_to_pull = list(iter(train_temp))
         start_rn = np.random.randint(0, len(train_temp))
         rand_batch = train_to_pull[start_rn][0]
-        logging.debug(f'Total batches are {batch_train}')
+        logging.info(f'Total batches are {batch_train}')
         start_time = time.time()
+        progbar_train = tf.keras.utils.Progbar(batch_train)
         for i, (img_batch, label_batch) in enumerate(train_ds.take(batch_train)):
             inter_time = time.time()
 
@@ -42,7 +43,7 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
 
             # Get the goal representation
             goal_representation = robust_model(img_batch)
-
+            # logging.info(f'Total batches are {batch_train}')
             # Upate the batch of images
             learned_delta = pgd_l2_robust(robust_model, rand_batch, goal_representation, alpha=alpha, num_iter=iters)
             robust_update = (rand_batch + learned_delta)
@@ -61,6 +62,7 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
             rn = np.random.randint(0, len(train_temp)-1) # -1 because last batch might be smaller
             rand_batch = train_to_pull[rn][0]
 
+            progbar_train.update(i)
 
         # Convert to TensorFlow Dataset
         robust_ds = tf.data.Dataset.from_tensor_slices((tf.concat(robust_train, axis=0), tf.concat(orig_labels, axis=0)))\
