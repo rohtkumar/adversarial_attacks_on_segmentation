@@ -2,14 +2,12 @@ import tensorflow as tf
 from util import parsing as parse
 import logging
 import cityscapesscripts as cs
-log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-logging.basicConfig(level=logging.INFO, format=log_fmt)
 # tf.data.experimental.AUTOTUNE
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 def get_dataset(dataset_path, img_size, batch_size, buffer_size):
-    logger = logging.getLogger(__name__)
-    logger.info('making data set from image directory')
+    # logger = logging.getLogger(__name__)
+    logging.info('making data set from image directory')
     
     all_dataset = tf.data.Dataset.list_files(dataset_path + "*.png")
     test_dataset = all_dataset.take(288) 
@@ -18,8 +16,8 @@ def get_dataset(dataset_path, img_size, batch_size, buffer_size):
     TRAINSET_SIZE = len(train_dataset)
     VALSET_SIZE= len(test_dataset)
     
-    logger.info(f"The Training Dataset contains {TRAINSET_SIZE} images.")
-    logger.info(f"The Training Dataset contains {VALSET_SIZE} images.")
+    logging.info(f"The Training Dataset contains {TRAINSET_SIZE} images.")
+    logging.info(f"The Training Dataset contains {VALSET_SIZE} images.")
     
     train_dataset = train_dataset.map(parse.parse_image)
     test_dataset = test_dataset.map(parse.parse_image)
