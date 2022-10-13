@@ -83,15 +83,3 @@ def get_cityscape_dataset(dataset_path, img_size, batch_size, buffer_size):
 
     return dataset['train'].apply(tf.data.experimental.assert_cardinality(2975)), dataset['val'].apply(tf.data.experimental.assert_cardinality(500)), dataset['test'].apply(tf.data.experimental.assert_cardinality(1525))
 
-
-def get_robust_dataset(robust_train, orig_labels, batch_size):
-    img = tf.concat(robust_train, axis=0)
-    mask = tf.concat(orig_labels, axis=0)
-    robust_ds = tf.data.Dataset.from_tensor_slices((img, mask))
-    robust_ds = robust_ds.prefetch(AUTOTUNE)
-    robust_ds = robust_ds.map(parse.robust_preprocess, num_parallel_calls=AUTOTUNE)
-    robust_ds = robust_ds.shuffle(len(robust_train))
-    robust_ds = robust_ds.batch(batch_size)
-    
-    return robust_dsl
-   

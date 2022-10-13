@@ -33,6 +33,20 @@ def initialize_std_model(args, classes, activation):
 
     return model
 
+def initialize_std_model_test(args, classes, activation):
+    learning_rate_fn = tf.keras.optimizers.schedules.PiecewiseConstantDecay(
+        [15000, 20000], [0.1, 0.01, 1e-3])
+
+    model = get_model(args, classes, activation)
+    model.compile(
+        loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+        optimizer=tf.keras.optimizers.SGD(learning_rate=learning_rate_fn,
+                                          momentum=0.9),
+        # optimizer = tf.keras.optimizers.Adam(),
+        metrics=[sm.metrics.IOUScore(), 'accuracy']
+    )
+
+    return model
 
 def init_adv_model(args, classes, activation):
     # dice_loss = args.training_loss1

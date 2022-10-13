@@ -8,7 +8,7 @@ BATCH_SIZE=4
 
 #resnet50 or efficientnetb3
 MODEL=$1
-MODE=$2 # Std_train, Adv_train
+MODE=$2 # std_train, adv_train, robustifier, std_test, adv_test
 LOAD_PATH=$3
 # save best Model checkpoint path
 TIME=$(date +"%Y%m%d-%H%M%S")

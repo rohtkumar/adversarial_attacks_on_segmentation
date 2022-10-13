@@ -60,6 +60,11 @@ def main():
             logging.info("Loading saved model")
             robust_model = models.get_robust_model(args)
             robust.robustify(args, robust_model, train_dataset, iters=1000, alpha=0.1)
+        elif args.mode == "std_test":
+            args.std_model = models.initialize_std_model_test(args, 10, "softmax")
+            robust_tr = tools.get_dataset(args.load)
+            logging.info(f'Loaded robust training dataset of lenght {robust_tr}')
+            Std_train.train(args, robust_tr, val_dataset)
         else:
             print(args.model)
 
