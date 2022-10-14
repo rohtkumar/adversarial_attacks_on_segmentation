@@ -40,6 +40,7 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
 
             # For the last batch, it is smaller than batch_size and thus we match the size for the batch of initial images
             if img_batch.shape[0] < args.batch_size:
+                logging.info("Input train image batch smaller than batch size")
                 rand_batch = rand_batch[:img_batch.shape[0]]
 
             # Get the goal representation
