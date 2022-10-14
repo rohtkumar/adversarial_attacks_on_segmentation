@@ -62,7 +62,7 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
             rn = np.random.randint(0, len(train_temp)-1) # -1 because last batch might be smaller
             rand_batch = train_to_pull[rn][0]
 
-            progbar_train.update(i)
+#            progbar_train.update(i)
 
         # Convert to TensorFlow Dataset
         robust_ds = tf.data.Dataset.from_tensor_slices((tf.concat(robust_train, axis=0), tf.concat(orig_labels, axis=0)))\
