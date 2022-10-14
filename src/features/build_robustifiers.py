@@ -25,13 +25,14 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
         orig_labels = []
         example = False
 
-
-        batch_train = len(train_ds) // args.batch_size
+        saved_path = os.path.join(args.save, 'robustified_' + args.model_name + '_robust_ds')
+        # batch_train = len(train_ds) // args.batch_size
         train_temp = train_ds.take(1152)
+
         train_to_pull = list(iter(train_temp))
         start_rn = np.random.randint(0, len(train_temp))
         rand_batch = train_to_pull[start_rn][0]
-        logging.info(f'Total batches are {batch_train}')
+        logging.info(f'Total trainset length are {len(train_temp)}')
         start_time = time.time()
         progbar_train = tf.keras.utils.Progbar(train_temp)
         for i, (img_batch, label_batch) in enumerate(train_temp):
@@ -58,20 +59,25 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
                 elapsed_tracking = time.time() - inter_time
                 logging.info(f'Robustified {(i+1)*args.batch_size} images in {elapsed:0.3f} seconds; Took {elapsed_tracking:0.3f} seconds for this particular iteration')
 
+            robust_ds = tf.data.Dataset.from_tensor_slices(
+                (tf.concat(robust_train, axis=0), tf.concat(orig_labels, axis=0))) \
+                .prefetch(tf.data.experimental.AUTOTUNE).map(robust_preprocess, num_parallel_calls=tf.data.experimental.AUTOTUNE) \
+                .shuffle(len(robust_train)).batch(args.batch_size)
+            tools.save_dataset(robust_ds, saved_path)
           # Reset random image batch
             rn = np.random.randint(0, len(train_temp)-1) # -1 because last batch might be smaller
             rand_batch = train_to_pull[rn][0]
 
-#            progbar_train.update(i)
+            progbar_train.update(i)
 
         # Convert to TensorFlow Dataset
-        robust_ds = tf.data.Dataset.from_tensor_slices((tf.concat(robust_train, axis=0), tf.concat(orig_labels, axis=0)))\
-            .prefetch(tf.data.experimental.AUTOTUNE).map(robust_preprocess, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
-            .shuffle(len(robust_train)).batch(args.batch_size)
+        # robust_ds = tf.data.Dataset.from_tensor_slices((tf.concat(robust_train, axis=0), tf.concat(orig_labels, axis=0)))\
+        #     .prefetch(tf.data.experimental.AUTOTUNE).map(robust_preprocess, num_parallel_calls=tf.data.experimental.AUTOTUNE)\
+        #     .shuffle(len(robust_train)).batch(args.batch_size)
 
-        saved_path = os.path.join(args.save, 'robustified_' +args.model_name+'_robust_ds')
+
         logging.info(f'Robustifier dataset completed..... Saving dataset at {saved_path}')
-        tools.save_dataset(robust_ds, saved_path)
+        # tools.save_dataset(robust_ds, saved_path)
         # tf.data.experimental.save(robust_ds, '../data/robustified/'+args.model_name+'_robust_ds'+time.time())
 
         return robust_ds

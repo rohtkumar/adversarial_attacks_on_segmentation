@@ -18,7 +18,6 @@ def main():
     train_loader = None
     test_loader = None
     args = cl.parse_arguments()
-    print(args.save)
     args.source_home = root_home
     # args.save = root_home+args.save
 
