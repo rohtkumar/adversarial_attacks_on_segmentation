@@ -26,7 +26,7 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
         example = False
 
         saved_path = os.path.join(args.save, 'robustified_' + args.model_name + '_robust_ds')
-        # batch_train = len(train_ds) // args.batch_size
+        batch_train = len(train_ds) // args.batch_size
         train_temp = train_ds.take(1152)
 
         train_to_pull = list(iter(train_temp))
@@ -36,6 +36,7 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
         start_time = time.time()
         progbar_train = tf.keras.utils.Progbar(train_temp)
         for i, (img_batch, label_batch) in enumerate(train_temp):
+            logging.info(f'Image shape {img_batch.shape} and Mask shape {label_batch.shape}')
             inter_time = time.time()
 
             # For the last batch, it is smaller than batch_size and thus we match the size for the batch of initial images
