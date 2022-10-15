@@ -34,9 +34,9 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
         rand_batch = train_to_pull[start_rn][0]
         logging.info(f'Total trainset length are {len(train_temp)}')
         start_time = time.time()
-        progbar_train = tf.keras.utils.Progbar(train_temp)
+        progbar_train = tf.keras.utils.Progbar(len(train_temp))
         for i, (img_batch, label_batch) in enumerate(train_temp):
-            logging.info(f'Image shape {img_batch.shape} and Mask shape {label_batch.shape}')
+#            logging.info(f'Image shape {img_batch.shape} and Mask shape {label_batch.shape} for iteration {i}')
             inter_time = time.time()
 
             # For the last batch, it is smaller than batch_size and thus we match the size for the batch of initial images
@@ -54,6 +54,7 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
             # Add the updated images and labels to their respective lists
             robust_train.append(robust_update)
             orig_labels.append(label_batch)
+            progbar_train.update(i)
 
             # Measure the time
             if (i+1) % 10 == 0:
@@ -70,7 +71,7 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
             rn = np.random.randint(0, len(train_temp)-1) # -1 because last batch might be smaller
             rand_batch = train_to_pull[rn][0]
 
-            progbar_train.update(i)
+#            progbar_train.update(i)
 
         # Convert to TensorFlow Dataset
         # robust_ds = tf.data.Dataset.from_tensor_slices((tf.concat(robust_train, axis=0), tf.concat(orig_labels, axis=0)))\
