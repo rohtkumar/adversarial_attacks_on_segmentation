@@ -3,7 +3,7 @@
 #DATA_HOME="../../citysacpe/gtFine/"
 DATA_HOME="../../dataset/images/"
 SOURCE_HOME="../adversarial_attacks_on_segmentation"
-BATCH_SIZE=4
+BATCH_SIZE=12
 
 
 #resnet50 or efficientnetb3
