@@ -62,8 +62,8 @@ def main():
         elif args.mode == "std_test":
             args.std_model = models.initialize_std_model_test(args, 10, "softmax")
             robust_tr = tools.get_dataset(args.load)
-            logging.info(f'Loaded robust training dataset of lenght {robust_tr}')
-            Std_train.train(args, robust_tr, val_dataset)
+            logging.info(f'Loaded robust training dataset of lenght {len(robust_tr)}')
+            Std_train.test(args, robust_tr, val_dataset)
         else:
             print(args.model)
 

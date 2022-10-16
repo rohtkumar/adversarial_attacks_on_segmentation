@@ -3,7 +3,7 @@ from tensorflow import keras as K
 from tensorflow.keras.utils import get_source_inputs
 import segmentation_models as sm
 from segmentation_models import get_preprocessing
-
+import logging
 K.backend.set_image_data_format('channels_last')
 SM_FRAMEWORK = tf.keras
 sm.set_framework('tf.keras')
@@ -38,6 +38,7 @@ def initialize_std_model_test(args, classes, activation):
         [15000, 20000], [0.1, 0.01, 1e-3])
 
     model = get_model(args, classes, activation)
+    logging.info(f'Created model {model}')
     model.compile(
         loss=tf.keras.losses.SparseCategoricalCrossentropy(),
         optimizer=tf.keras.optimizers.SGD(learning_rate=learning_rate_fn,
@@ -45,7 +46,7 @@ def initialize_std_model_test(args, classes, activation):
         # optimizer = tf.keras.optimizers.Adam(),
         metrics=[sm.metrics.IOUScore(), 'accuracy']
     )
-
+    logging.info(f'Compiled model {model}')
     return model
 
 def init_adv_model(args, classes, activation):
