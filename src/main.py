@@ -52,7 +52,7 @@ def main():
         args.lr_scheduler1 = class_
 
 
-with logger.LoggingBlock("Start Model setup and execution", emph=True):
+    with logger.LoggingBlock("Start Model setup and execution", emph=True):
         if(args.is_train):
             if args.mode == "std":
                 args.std_model = models.initialize_std_model(args, 10, "softmax")
