@@ -27,7 +27,7 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
 
         saved_path = os.path.join(args.save, 'robustified_' + args.model_name + '_robust_ds')
         # batch_train = len(train_ds) // args.batch_size
-        train_temp = train_ds.take(1152)
+        train_temp = train_ds.take(792)
 
         train_to_pull = list(iter(train_temp))
         start_rn = np.random.randint(0, len(train_temp))
