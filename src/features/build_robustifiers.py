@@ -82,7 +82,7 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
 
         logging.info(f'Robustifier dataset completed..... Saving dataset at {saved_path}')
         # tools.save_dataset(robust_ds, saved_path)
-        tf.data.experimental.save(robust_ds, '../data/robustified/'+args.model_name+'_robust_ds'+time.time())
+        tf.data.experimental.save(robust_ds, '../data/robustified/'+args.model_name+'_robust_ds')
 
         return robust_ds
 

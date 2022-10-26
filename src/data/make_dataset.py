@@ -48,7 +48,7 @@ def get_dataset(dataset_path, img_size, batch_size, buffer_size):
     dataset['test'] = dataset['test'].prefetch(buffer_size=AUTOTUNE)
     # result = dataset['val'].apply(tf.data.experimental.assert_cardinality(288))
     # print(len(result))
-    return dataset['train'], dataset['val'].apply(tf.data.experimental.assert_cardinality(288)),  dataset['test']
+    return dataset['train'], dataset['val'].take(360),  dataset['test']
 #    return dataset['train'], dataset['val']
 
 def get_cityscape_dataset(dataset_path, img_size, batch_size, buffer_size):
