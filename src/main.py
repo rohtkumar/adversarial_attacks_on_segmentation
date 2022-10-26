@@ -12,11 +12,11 @@ import tensorflow
 
 
 def main():
-#    os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "2,3"
     root_home = os.path.dirname(os.path.realpath(__file__))
     gpu_devices = tf.config.experimental.list_physical_devices('GPU')
-    for device in gpu_devices:
-        tf.config.experimental.set_memory_growth(device, True)
+#    for device in gpu_devices:
+#        tf.config.experimental.set_memory_growth(device, True)
     # print("file path %s" %root_home)
 #     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     train_loader = None
