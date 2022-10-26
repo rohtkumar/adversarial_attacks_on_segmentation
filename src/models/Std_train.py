@@ -33,7 +33,7 @@ def train(args, train_dataset, val_dataset):
         ]
         results = args.std_model.fit(train_dataset, epochs=100, validation_steps=len(val_dataset) // args.batch_size,
                                      validation_data=val_dataset, callbacks=callbacks)
-        logger.info("Average test loss: " + np.average(results.history['loss']))
+        logger.info("Average test loss: " + str*np.average(results.history['loss']))
 
 def test(args, train_dataset, val_dataset):
     with logger.LoggingBlock("Start Standard Testing", emph=True):
@@ -54,4 +54,4 @@ def test(args, train_dataset, val_dataset):
         results = args.std_model.fit(train_dataset, epochs=100, validation_steps=len(val_dataset) // args.batch_size,
                                      validation_data=val_dataset, callbacks=callbacks)
         avg_loss= np.average(results.history['loss'])
-        logger.info(f'Average test loss: {avg_loss}')
+        logger.info(f'Average test loss: {str(avg_loss)}')

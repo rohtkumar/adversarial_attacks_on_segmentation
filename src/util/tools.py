@@ -77,7 +77,6 @@ def save_dataset(dataset, path):
 
 def get_dataset(path):
     return tf.data.experimental.load(path)
-
 def load_model(model, path):
     model.load_weights(path)
     return model

@@ -1,6 +1,7 @@
 import os
 import logging
 import colorama
+import tensorflow as tf
 from util import commandline as cl, logger, tools
 from data import make_dataset as md
 from models import models, Std_train, adversarial_train as adv_train
@@ -11,8 +12,11 @@ import tensorflow
 
 
 def main():
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+#    os.environ["CUDA_VISIBLE_DEVICES"] = "2"
     root_home = os.path.dirname(os.path.realpath(__file__))
+    gpu_devices = tf.config.experimental.list_physical_devices('GPU')
+    for device in gpu_devices:
+        tf.config.experimental.set_memory_growth(device, True)
     # print("file path %s" %root_home)
 #     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     train_loader = None
@@ -58,7 +62,7 @@ def main():
             args.adv_model = tools.load_model(models.init_adv_model(args, 10, "softmax"), args.load)
             logging.info("Loading saved model")
             robust_model = models.get_robust_model(args)
-            robust.robustify(args, robust_model, train_dataset, iters=1000, alpha=0.1)
+            robust.robustify(args, robust_model, train_dataset, iters=100, alpha=0.1)
         elif args.mode == "std_test":
             args.std_model = models.initialize_std_model_test(args, 10, "softmax")
             robust_tr = tools.get_dataset(args.load)

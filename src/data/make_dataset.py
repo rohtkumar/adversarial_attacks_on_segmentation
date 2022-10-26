@@ -10,6 +10,7 @@ def get_dataset(dataset_path, img_size, batch_size, buffer_size):
     logging.info('making data set from image directory')
     
     all_dataset = tf.data.Dataset.list_files(dataset_path + "*.png")
+    logging.info(f"The Complete Dataset contains {all_dataset} images.")
     test_dataset = all_dataset.take(288) 
     train_dataset = all_dataset.skip(290)
     parse.define_img_size(img_size)
@@ -37,7 +38,7 @@ def get_dataset(dataset_path, img_size, batch_size, buffer_size):
     dataset['val'] = dataset['val'].prefetch(buffer_size=AUTOTUNE)
     # result = dataset['val'].apply(tf.data.experimental.assert_cardinality(288))
     # print(len(result))
-    return dataset['train'].apply(tf.data.experimental.assert_cardinality(1153)), dataset['val'].apply(tf.data.experimental.assert_cardinality(288))
+    return dataset['train'], dataset['val'].apply(tf.data.experimental.assert_cardinality(288))
 #    return dataset['train'], dataset['val']
 
 def get_cityscape_dataset(dataset_path, img_size, batch_size, buffer_size):
