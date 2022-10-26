@@ -37,10 +37,10 @@ def get_dataset(dataset_path, img_size, batch_size, buffer_size):
     dataset['train'] = dataset['train'].prefetch(buffer_size=AUTOTUNE)
 
 
-    dataset['test'] = dataset['test'].map(parse.load_image_test)
-    dataset['test'] = dataset['test'].repeat()
-    dataset['test'] = dataset['test'].batch(batch_size)
-    dataset['test'] = dataset['test'].prefetch(buffer_size=AUTOTUNE)
+    dataset['val'] = dataset['val'].map(parse.load_image_test)
+    dataset['val'] = dataset['val'].repeat()
+    dataset['val'] = dataset['val'].batch(batch_size)
+    dataset['val'] = dataset['val'].prefetch(buffer_size=AUTOTUNE)
 
     dataset['test'] = dataset['test'].map(parse.load_image_test)
     dataset['test'] = dataset['test'].repeat()
