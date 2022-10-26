@@ -37,7 +37,7 @@ def main():
             logging.info('{}{}: {}{}'.format(color, argument, value, reset))
     
     tools.set_seed(25)
-    train_dataset, val_dataset = md.get_dataset(args.dataset_root, args.img_size, args.batch_size, 500)
+    train_dataset, val_dataset, test_dataset = md.get_dataset(args.dataset_root, args.img_size, args.batch_size, 500)
     # train_dataset, val_dataset, test_dataset = md.get_cityscape_dataset(args.dataset_root, args.img_size,
     #                                                                     args.batch_size, 500)
 
@@ -51,8 +51,9 @@ def main():
         class_ = tools.getClass("tensorflow.keras.optimizers.schedules", args.lr_scheduler)
         args.lr_scheduler1 = class_
 
-    if(args.is_train):
-        with logger.LoggingBlock("Setup Train Model", emph=True):
+
+with logger.LoggingBlock("Start Model setup and execution", emph=True):
+        if(args.is_train):
             if args.mode == "std":
                 args.std_model = models.initialize_std_model(args, 10, "softmax")
                 Std_train.train(args, train_dataset, val_dataset)
@@ -71,12 +72,11 @@ def main():
                 Std_train.test(args, robust_tr, val_dataset)
             else:
                 print(args.model)
-    else:
-        with logger.LoggingBlock("Setup Test Methods", emph=True):
+        else:
             if args.mode == "evaluate":
                 args.adv_model = tools.load_model(models.initialize_std_model_test(args, 10, "softmax"), args.load)
-                eval.run_adversarial_attack(args.adv_model, val_dataset.take(288) , attack=at.pgd_l2_adv, attack_params={'epsilon':0.25, 'num_iter':7, 'alpha':0.25/5})
-                eval.run_adversarial_attack(args.adv_model, val_dataset.take(288), attack=at.pgd_linf, attack_params={'epsilon': 0.25, 'num_iter': 7, 'alpha': 0.5 / 5})  # {'epsilon':0.5, 'num_iter':7, 'alpha':0.5/5}
+                eval.run_adversarial_attack(args.adv_model, test_dataset.take(360) , attack=at.pgd_l2_adv, attack_params={'epsilon':0.25, 'num_iter':7, 'alpha':0.25/5})
+                eval.run_adversarial_attack(args.adv_model, test_dataset.take(360), attack=at.pgd_linf, attack_params={'epsilon': 0.25, 'num_iter': 7, 'alpha': 0.5 / 5})  # {'epsilon':0.5, 'num_iter':7, 'alpha':0.5/5}
 
 
 if __name__ == "__main__":
