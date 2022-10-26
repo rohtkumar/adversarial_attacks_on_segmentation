@@ -62,12 +62,12 @@ def robustify(args, robust_model, train_ds, iters=1000, alpha=0.1):
                 elapsed_tracking = time.time() - inter_time
                 logging.info(f'Robustified {(i+1)*args.batch_size} images in {elapsed:0.3f} seconds; Took {elapsed_tracking:0.3f} seconds for this particular iteration')
 
-            robust_ds = tf.data.Dataset.from_tensor_slices(
-                (tf.concat(robust_train, axis=0), tf.concat(orig_labels, axis=0))) \
-                .prefetch(AUTOTUNE).map(robust_preprocess, num_parallel_calls=AUTOTUNE) \
-                .shuffle(len(robust_train)).batch(args.batch_size)
-            saved_path = os.path.join(args.save, 'robustified_' + args.model_name + '_robust_ds' + str(i))
-            tools.save_dataset(robust_ds, saved_path)
+            # robust_ds = tf.data.Dataset.from_tensor_slices(
+            #     (tf.concat(robust_train, axis=0), tf.concat(orig_labels, axis=0))) \
+            #     .prefetch(AUTOTUNE).map(robust_preprocess, num_parallel_calls=AUTOTUNE) \
+            #     .shuffle(len(robust_train)).batch(args.batch_size)
+            # saved_path = os.path.join(args.save, 'robustified_' + args.model_name + '_robust_ds' + str(i))
+            # tools.save_dataset(robust_ds, saved_path)
           # Reset random image batch
             rn = np.random.randint(0, len(train_temp)-1) # -1 because last batch might be smaller
             rand_batch = train_to_pull[rn][0]
