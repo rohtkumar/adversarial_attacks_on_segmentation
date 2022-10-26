@@ -26,7 +26,7 @@ def get_dataset(dataset_path, img_size, batch_size, buffer_size):
     
     train_dataset = train_dataset.map(parse.parse_image)
     test_dataset = test_dataset.map(parse.parse_image)
-    val_dataset = test_dataset.map(parse.parse_image)
+    val_dataset = val_dataset.map(parse.parse_image)
 
     dataset = {"train": train_dataset, "val": val_dataset, "test": test_dataset}
 
