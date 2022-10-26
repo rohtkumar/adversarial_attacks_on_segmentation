@@ -30,6 +30,7 @@ def parse_arguments():
     add("--optimizer_lr", type=float)
     add("--model_name", type=tools.str2str_or_none)
     add("--early_stopping", type=tools.str2bool, default=True)
+    add("--is_train", type=tools.str2bool, default=True)
     add("--early_stopping_patience", type=int, default=2)
     add("--dataset_root", default="/", type=str)
     add("--source_home", type=tools.str2str_or_none)

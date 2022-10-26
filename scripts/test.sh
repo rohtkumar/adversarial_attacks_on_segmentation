@@ -8,7 +8,7 @@ BATCH_SIZE=12
 
 #resnet50 or efficientnetb3
 MODEL=$1
-MODE=$2 # std_train, adv_train, robustifier, std_test, adv_test, evaluate
+MODE=$2 # evaluate
 LOAD_PATH=$3
 # save best Model checkpoint path
 TIME=$(date +"%Y%m%d-%H%M%S")
@@ -32,7 +32,7 @@ python3 ../src/main.py \
 --mode=$MODE \
 --model_name=$MODEL \
 --img_size=128 \
---is_train=True \
+--is_train=False \
 --early_stopping=True \
 --early_stopping_patience=10 \
 --optimizer=Adam \
