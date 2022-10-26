@@ -18,6 +18,7 @@ def run_adversarial_attack(model, valid_dataset , attack, attack_params=None, **
     t = time.time()
     test_losses = []
     test_accs = []
+    test_ious = []
 #     print(valid_dataset.length())
     for Xtest, ytest in valid_dataset:         
         # Run attack perturbation
@@ -28,11 +29,13 @@ def run_adversarial_attack(model, valid_dataset , attack, attack_params=None, **
         
 #         print(delta)
         Xdtest = Xtest + delta
-        l, acc, *is_anything_else_being_returned = model.test_on_batch(Xdtest, ytest)
-        print(l)
+        l, IOU, acc = model.test_on_batch(Xdtest, ytest)
+        # print(l)
         test_losses.append(l)
         test_accs.append(acc)
+        test_ious.append(IOU)
     
     test_loss = sum(test_losses) / len(test_losses)
     test_acc = sum(test_accs) / len(test_accs)
-    logging.info(f"Time: {(time.time()-t):0.2f} Test Loss: {test_loss:0.2f}, Test Acc: {test_acc:0.2f}")
+    test_iou = sum(test_ious) / len(test_ious)
+    logging.info(f"Time: {(time.time()-t):0.2f} Test Loss: {test_loss:0.2f}, Test Acc: {test_acc:0.2f}, Test IOU :{test_iou:0.3f}")
