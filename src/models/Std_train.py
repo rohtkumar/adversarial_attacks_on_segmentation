@@ -33,7 +33,7 @@ def train(args, train_dataset, val_dataset):
         ]
 #        results = args.std_model.fit(train_dataset, epochs=100, validation_steps=len(val_dataset) // args.batch_size,
 #                                     validation_data=val_dataset, callbacks=callbacks)
-        results = args.std_model.fit(train_dataset, epochs=100, validation_data=val_dataset, callbacks=callbacks)
+        results = args.std_model.fit(train_dataset.take(792), epochs=100, validation_data=val_dataset, callbacks=callbacks)
         logger.info("Average test loss: " + str(np.average(results.history['loss'])))
 
 def test(args, train_dataset, val_dataset):
