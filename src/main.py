@@ -31,7 +31,7 @@ def main():
     os.chdir(args.source_home)
     logger.configure_logging(os.path.join(args.save, 'logbook.txt'))
     tools.write2file(sorted(vars(args).items()), filename=os.path.join(args.save, 'args.txt'))
-    
+
     with logger.LoggingBlock("Intialization", emph=True):
         for argument, value in sorted(vars(args).items()):
             reset = colorama.Fore.GREEN

@@ -33,8 +33,7 @@ def nonrobustify_dataset(args, std_training, train_ds, ):
         img_batch_t = tf.identity(img_batch)
 
         # Generate a random label, get the delta and add in the perturbation (random uniform approach)
-        t_batch = np.random.randint(low=0, high=9, size=img_batch_t.shape
-        [0])  # t_batch = (label_batch + 1) % 10   <-- deterministic approach
+        t_batch = np.random.randint(low=0, high=9, size=img_batch_t.shape[0])  # t_batch = (label_batch + 1) % 10   <-- deterministic approach
 
         # Update the image so that it is non-robust
         learned_delta = pgd_l2_nonrobust(std_training, img_batch_t, t_batch, epsilon=0.5, alpha=0.1, num_iter=iters)
