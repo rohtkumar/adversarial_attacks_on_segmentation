@@ -18,7 +18,7 @@ sm.set_framework('tf.keras')
 
 def train(args, train_dataset, val_dataset):
     with logger.LoggingBlock("Start Standard Training", emph=True):
-        saved_model = os.path.join(args.save, 'best_' + args.model_name + '_unet.h5')
+        saved_model = os.path.join(args.save, 'best_'+args.mode + args.model_name + '_unet.h5')
         tensorboard_callback = tf.keras.callbacks.TensorBoard(args.save)
         callbacks = [
             # to show samples after each epoch

@@ -7,6 +7,7 @@ from data import make_dataset as md
 from models import models, Std_train, adversarial_train as adv_train, evaluate_attack as eval
 from attacks import attacks as at
 from features import build_robustifiers as robust
+from features import build_nonrobustifier as nonrobust
 import segmentation_models as sm
 import tensorflow
 
@@ -30,6 +31,7 @@ def main():
     os.chdir(args.source_home)
     logger.configure_logging(os.path.join(args.save, 'logbook.txt'))
     tools.write2file(sorted(vars(args).items()), filename=os.path.join(args.save, 'args.txt'))
+    
     with logger.LoggingBlock("Intialization", emph=True):
         for argument, value in sorted(vars(args).items()):
             reset = colorama.Fore.GREEN
@@ -65,6 +67,10 @@ def main():
                 logging.info("Loading saved model")
                 robust_model = models.get_robust_model(args)
                 robust.robustify(args, robust_model, train_dataset, iters=100, alpha=0.1)
+            elif args.mode == "nonrobustifier":
+                args.std_model = tools.load_model(models.initialize_std_model(args, 10, "softmax"), args.load)
+                logging.info("Loading saved model")
+                nonrobust.nonrobustify_dataset(args, args.std_model, train_dataset)
             elif args.mode == "std_test":
                 args.std_model = models.initialize_std_model_test(args, 10, "softmax")
                 robust_tr = tools.get_dataset(args.load)
