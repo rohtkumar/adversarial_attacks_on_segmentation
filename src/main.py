@@ -13,7 +13,7 @@ import tensorflow
 
 
 def main():
-    os.environ["CUDA_VISIBLE_DEVICES"] = "2,3"
+#    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     root_home = os.path.dirname(os.path.realpath(__file__))
     gpu_devices = tf.config.experimental.list_physical_devices('GPU')
 #    for device in gpu_devices:
