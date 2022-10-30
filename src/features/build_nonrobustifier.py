@@ -17,7 +17,7 @@ def robust_preprocess(img, label):
     return img, label
 
 
-def nonrobustify_dataset(args, std_training, train_ds, ):
+def nonrobustify_dataset(args, std_training, train_ds ):
     original_train = []
     non_robust_train = []
     t_train = []
@@ -25,7 +25,7 @@ def nonrobustify_dataset(args, std_training, train_ds, ):
     iters = 100
 #    saved_path = os.path.join(args.save, 'nonrobustified_' + args.model_name + '_robust_ds' + time.time())
     start_time = time.time()
-    progbar_train = tf.keras.utils.Progbar(train_ds)
+    progbar_train = tf.keras.utils.Progbar(len(train_ds.take(792)))
     # Loops through entire train dataset image-by-image
     for i, (img_batch, label_batch) in enumerate(train_ds):  # Unbatch splits batches into individual images
         inter_time = time.time()
