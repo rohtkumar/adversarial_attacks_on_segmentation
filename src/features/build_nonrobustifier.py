@@ -68,8 +68,8 @@ def nonrobustify_dataset(args, std_training, train_ds, ):
 
     saved_path = os.path.join(args.save, 'nonrobustified_' + args.model_name + '_non_robust_ds')
     logging.info(f'Nonrobustifier on model completed..... Saving dataset at {saved_path}')
-    tools.save_dataset(non_robust_ds, saved_path)
-    saved_path = os.path.join(args.save, 'nonrobustified_' + args.model_name + '_orig_non_robust_ds')
-    tools.save_dataset(original_non_robust_ds, saved_path)
+    tf.data.experimental.save(non_robust_ds, saved_path)
+    saved_path1 = os.path.join(args.save, 'nonrobustified_' + args.model_name + '_orig_non_robust_ds')
+    tf.data.experimental.save(original_non_robust_ds, saved_path1)
     # logging.info(f'Nonrobustifier dataset completed..... Saving dataset at {saved_path}')
 
