@@ -23,8 +23,7 @@ def get_model(args, classes, activation):
 
 
 def initialize_std_model(args, classes, activation):
-    # BACKBONE = 'efficientnetb3' 'resnet50'
-    preprocess_input = get_preprocessing(args.model)
+
     model = get_model(args, classes, activation)
 
     dice_loss = args.training_loss1

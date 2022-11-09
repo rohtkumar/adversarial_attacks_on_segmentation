@@ -2,6 +2,7 @@ import tensorflow as tf
 from util import parsing as parse
 import logging
 import cityscapesscripts as cs
+from segmentation_models import get_preprocessing
 # tf.data.experimental.AUTOTUNE
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
@@ -47,8 +48,12 @@ def get_dataset(dataset_path, img_size, batch_size, buffer_size):
     dataset['test'] = dataset['test'].batch(batch_size)
     dataset['test'] = dataset['test'].prefetch(buffer_size=AUTOTUNE)
     # result = dataset['val'].apply(tf.data.experimental.assert_cardinality(288))
-    # print(len(result))
-    return dataset['train'], dataset['val'].take(360),  dataset['test']
+    preprocess_input = get_preprocessing("resnet50")
+
+
+    x_train = preprocess_input(dataset['train'])
+    return preprocess_input(dataset['train']), preprocess_input(dataset['val'].take(360)),  preprocess_input(dataset['test'])
+    # return dataset['train'], dataset['val'].take(360),  dataset['test']
 #    return dataset['train'], dataset['val']
 
 def get_cityscape_dataset(dataset_path, img_size, batch_size, buffer_size):
