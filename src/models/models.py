@@ -4,13 +4,16 @@ from tensorflow.keras.utils import get_source_inputs
 import segmentation_models as sm
 from segmentation_models import get_preprocessing
 import logging
+from util import logger, tools
 K.backend.set_image_data_format('channels_last')
 SM_FRAMEWORK = tf.keras
 sm.set_framework('tf.keras')
 
 
 def get_model(args, classes, activation):
-    model = sm.Unet(args.model, input_shape=(args.img_size, args.img_size, 3), classes=classes, activation=activation,
+    class_ = tools.getClass("segmentation_models", args.model)
+    head = class_()
+    model = head("resnet50", input_shape=(args.img_size, args.img_size, 3), classes=classes, activation=activation,
                     encoder_weights='imagenet')
     return model
 

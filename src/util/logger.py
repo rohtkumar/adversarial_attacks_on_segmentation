@@ -49,7 +49,7 @@ def addLoggingLevel(level_name, level_num, method_name=None):
             self._log(level_num, message, args, **kwargs)
 
     def logToRoot(message, *args, **kwargs):
-        return
+        pass
         # logging.log(level_num, message, *args, **kwargs)
 
     logging.addLevelName(level_num, level_name)
