@@ -11,10 +11,14 @@ sm.set_framework('tf.keras')
 
 
 def get_model(args, classes, activation):
-    class_ = tools.getClass("segmentation_models", args.model)
-    head = class_()
-    model = head("resnet50", input_shape=(args.img_size, args.img_size, 3), classes=classes, activation=activation,
+
+    if(args.model == 'Unet'):
+        model = sm.Unet('resnet50', input_shape=(args.img_size, args.img_size, 3), classes=classes, activation=activation,
                     encoder_weights='imagenet')
+    else:
+        model = sm.Linknet('resnet50', input_shape=(args.img_size, args.img_size, 3), classes=classes,
+                        activation=activation,
+                        encoder_weights='imagenet')
     return model
 
 
