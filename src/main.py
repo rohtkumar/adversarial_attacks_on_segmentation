@@ -13,7 +13,7 @@ import tensorflow
 
 
 def main():
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
+
     root_home = os.path.dirname(os.path.realpath(__file__))
 #    gpu_devices = tf.config.experimental.list_physical_devices('GPU')
 #    for device in gpu_devices:
@@ -25,6 +25,7 @@ def main():
     args = cl.parse_arguments()
     args.source_home = root_home
     # args.save = root_home+args.save
+    os.environ["CUDA_VISIBLE_DEVICES"] = args.cuda_device
 
     if not os.path.exists(args.save):
         os.makedirs(args.save, mode=0o777, exist_ok=True)

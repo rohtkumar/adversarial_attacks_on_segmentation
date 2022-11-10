@@ -30,12 +30,12 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
     with logger.LoggingBlock("Start Adversarial Training ", emph=True):
         model = args.adv_model
         saved_model = os.path.join(args.save, 'adv_' + args.model_name + '_unet.h5')
-        train_ds = train_ds.apply(tf.data.experimental.assert_cardinality(1153))
+        # train_ds = train_ds.apply(tf.data.experimental.assert_cardinality(1153))
         batch_train = len(train_ds) // args.batch_size
         batch_test = len(test_ds) // args.batch_size
         progbar_train = tf.keras.utils.Progbar(batch_train)
         progbar_test = tf.keras.utils.Progbar(batch_test)
-        patience = 10
+        patience = args.early_stopping_patience
         wait = 0
         best = 0
         # Create train and test functions wrapped
