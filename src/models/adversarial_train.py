@@ -100,9 +100,11 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
 
             wait += 1
             if test_loss > best:
+                logging.info(f" Val Loss improved from {best} to {test_loss} ")
                 best = test_loss
                 wait = 0
             if wait >= patience:
+                logging.info("Early stopping : Stopping training ")
                 break
 
             if verbose:
