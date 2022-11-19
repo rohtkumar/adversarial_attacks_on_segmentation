@@ -37,7 +37,7 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
         progbar_test = tf.keras.utils.Progbar(batch_test)
         patience = args.early_stopping_patience
         wait = 0
-        best = 0
+        best = 20
         # Create train and test functions wrapped
         if train_attack is not None:
             train_attack_tf = tf.function(train_attack)
@@ -99,7 +99,7 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
             test_acc = sum(test_accs) / len(test_accs)
 
             wait += 1
-            if test_loss > best:
+            if test_loss < best:
                 logging.info(f" Val Loss improved from {best} to {test_loss} ")
                 best = test_loss
                 wait = 0
