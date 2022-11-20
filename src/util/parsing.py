@@ -158,9 +158,12 @@ def load_image_train(datapoint: dict) -> tuple:
     data_augmentation = tf.keras.Sequential([
         # tf.keras.layers.RandomFlip("horizontal_and_vertical"),
         # tf.keras.layers.RandomRotation(0.2),
-        tf.keras.layers.RandomContrast(),
-        tf.keras.layers.RandomCrop(),
-        tf.keras.layers.RandomZoom()
+        tf.image.adjust_contrast(2.),
+        # tf.keras.layers.RandomCrop(),
+        tf.image.random_hue(0.2),
+        tf.image.random_contrast(0.2, 0.5),
+        tf.image.random_brightness(0.2)
+
     ])
     input_image = data_augmentation(input_image)
     if tf.random.uniform(()) > 0.5:
