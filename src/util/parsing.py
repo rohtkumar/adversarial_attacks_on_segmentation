@@ -155,8 +155,14 @@ def load_image_train(datapoint: dict) -> tuple:
     # IMG_SIZE=128
     input_image = tf.image.resize(datapoint['image'], (IMG_SIZE, IMG_SIZE))
     input_mask = tf.image.resize(datapoint['segmentation_mask'], (IMG_SIZE, IMG_SIZE))
-
-    # print(tf.__version__)
+    data_augmentation = tf.keras.Sequential([
+        # tf.keras.layers.RandomFlip("horizontal_and_vertical"),
+        # tf.keras.layers.RandomRotation(0.2),
+        tf.keras.layers.RandomContrast(),
+        tf.keras.layers.RandomCrop(),
+        tf.keras.layers.RandomZoom()
+    ])
+    input_image = data_augmentation(input_image)
     if tf.random.uniform(()) > 0.5:
         input_image = tf.image.flip_left_right(input_image)
         input_mask = tf.image.flip_left_right(input_mask)
