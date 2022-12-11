@@ -33,7 +33,7 @@ python3 ../src/main.py \
 --model_name=$MODEL \
 --img_size=128 \
 --is_train=True \
---cuda_device="0,1,2,3" \
+--cuda_device="3,2,1,0" \
 --early_stopping=True \
 --early_stopping_patience=10 \
 --optimizer=Adam \

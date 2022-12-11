@@ -17,6 +17,7 @@ sm.set_framework('tf.keras')
 
 
 def train(args, train_dataset, val_dataset):
+    
     with logger.LoggingBlock("Start Standard Training", emph=True):
         saved_model = os.path.join(args.save, 'best_'+args.mode + args.model_name + '_unet.h5')
         tensorboard_callback = tf.keras.callbacks.TensorBoard(args.save)
@@ -26,15 +27,20 @@ def train(args, train_dataset, val_dataset):
             # to collect some useful metrics and visualize them in tensorboard
             tensorboard_callback,
             # if no accuracy improvements we can stop the training directly
-            tf.keras.callbacks.EarlyStopping(patience=10, verbose=1),
+#             tf.keras.callbacks.EarlyStopping(patience=10, verbose=1),
             # to save checkpoints
             tf.keras.callbacks.ModelCheckpoint( saved_model , verbose=1, save_best_only=True,
                                                save_weights_only=False)
         ]
 #        results = args.std_model.fit(train_dataset, epochs=100, validation_steps=len(val_dataset) // args.batch_size,
 #                                     validation_data=val_dataset, callbacks=callbacks)
+        
         results = args.std_model.fit(train_dataset.take(792), epochs=100, validation_data=val_dataset, callbacks=callbacks)
-        logger.info("Average test loss: " + str(np.average(results.history['loss'])))
+        logging.info("Average train loss: " + str(np.average(results.history['loss'])))        
+        logging.info("Average train IOU: " + str(np.average(results.history['iou_score'])))
+        logging.info("Average val loss: " + str(np.average(results.history['val_loss'])))        
+        logging.info("Average val IOU: " + str(np.average(results.history['val_iou_score'])))
+        
 
 def test(args, train_dataset, val_dataset):
     with logger.LoggingBlock("Start Standard Testing", emph=True):

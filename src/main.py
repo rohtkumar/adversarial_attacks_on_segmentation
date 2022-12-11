@@ -41,6 +41,7 @@ def main():
     
     tools.set_seed(25)
     train_dataset, val_dataset, test_dataset = md.get_dataset(args.dataset_root, args.img_size, args.batch_size, 500)
+    #import pdb; pdb.set_trace()
     # train_dataset, val_dataset, test_dataset = md.get_cityscape_dataset(args.dataset_root, args.img_size,
     #                                                                     args.batch_size, 500)
 
@@ -62,12 +63,12 @@ def main():
                 Std_train.train(args, train_dataset, val_dataset)
             elif args.mode == "adv":
                 args.adv_model = models.init_adv_model(args, 10, "softmax")
-                adv_train.adversarial_training(args, train_dataset, val_dataset, train_attack=at.pgd_l2_adv, epsilon=0.5, num_iter=7, alpha=0.5 / 5, epochs=63)
+                adv_train.adversarial_training(args, train_dataset, val_dataset, train_attack=at.pgd_l2_adv, epsilon=10, num_iter=7, alpha=0.5 / 5, epochs=100)
             elif args.mode == "robustifier":
                 args.adv_model = tools.load_model(models.init_adv_model(args, 10, "softmax"), args.load)
                 logging.info("Loading saved model")
                 robust_model = models.get_robust_model(args)
-                robust.robustify(args, robust_model, train_dataset, iters=100, alpha=0.1)
+                robust.robustify(args, robust_model, train_dataset, iters=1000, alpha=0.1)
             elif args.mode == "nonrobustifier":
                 args.std_model = tools.load_model(models.initialize_std_model(args, 10, "softmax"), args.load)
                 logging.info("Loading saved model")
@@ -77,13 +78,20 @@ def main():
                 robust_tr = tools.get_dataset(args.load)
                 logging.info(f'Loaded robust training dataset of length {len(robust_tr)}')
                 Std_train.test(args, robust_tr, test_dataset)
+            elif args.mode == "robustd":
+                args.std_model = models.initialize_std_model(args, 10, "softmax")
+                logging.info("Loading Robustified dataset")
+                robust_ds = tools.get_dataset(args.load)
+                Std_train.train(args, robust_ds, val_dataset)
             else:
                 print(args.model)
         else:
             if args.mode == "evaluate":
+                logging.info("Starting PGD L2 evaluation")
                 args.adv_model = tools.load_model(models.initialize_std_model_test(args, 10, "softmax"), args.load)
-                eval.run_adversarial_attack(args.adv_model, test_dataset.take(360) , attack=at.pgd_l2_adv, attack_params={'epsilon':0.25, 'num_iter':7, 'alpha':0.25/5})
-                eval.run_adversarial_attack(args.adv_model, test_dataset.take(360), attack=at.pgd_linf, attack_params={'epsilon': 0.25, 'num_iter': 7, 'alpha': 0.5 / 5})  # {'epsilon':0.5, 'num_iter':7, 'alpha':0.5/5}
+                eval.run_adversarial_attack(args.adv_model, test_dataset.take(288) , attack=at.pgd_l2_adv, attack_params={'epsilon':0.7, 'num_iter':7, 'alpha':0.5/5})
+                logging.info("Starting PGD infinity evaluation")
+                eval.run_adversarial_attack(args.adv_model, test_dataset.take(288), attack=at.pgd_linf, attack_params={'epsilon': 0.5, 'num_iter': 7, 'alpha': 0.5 / 5})  # {'epsilon':0.5, 'num_iter':7, 'alpha':0.5/5}
 
 
 if __name__ == "__main__":

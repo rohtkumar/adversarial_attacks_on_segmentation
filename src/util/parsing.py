@@ -42,6 +42,8 @@ def parse_image(img_path: str) -> dict:
     mask = tf.image.decode_png(mask, channels=1)
     # Since 255 exist, changing it with 0
     mask = tf.where(mask == 255, np.dtype('uint8').type(8), mask)
+    mask = tf.cast(mask, tf.int64)
+    
     return {'image': image, 'segmentation_mask': mask}
 
 
@@ -127,7 +129,7 @@ def normalize(input_image: tf.Tensor, input_mask: tf.Tensor) -> tuple:
     # input_mask = encode_segmap(arry)
     # input_mask = tf.convert_to_tensor(input_mask, dtype=tf.int64)
 #     input_mask = tf.cast(input_mask, tf.float32) / 255.0
-    return input_image, input_mask
+    return input_image, tf.cast(input_mask, tf.int64)
    
 
 @tf.function
@@ -155,17 +157,23 @@ def load_image_train(datapoint: dict) -> tuple:
     # IMG_SIZE=128
     input_image = tf.image.resize(datapoint['image'], (IMG_SIZE, IMG_SIZE))
     input_mask = tf.image.resize(datapoint['segmentation_mask'], (IMG_SIZE, IMG_SIZE))
-    data_augmentation = tf.keras.Sequential([
+    #data_augmentation = tf.keras.Sequential([
         # tf.keras.layers.RandomFlip("horizontal_and_vertical"),
         # tf.keras.layers.RandomRotation(0.2),
-        tf.image.adjust_contrast(2.),
+     #   tf.image.adjust_contrast(2.),
         # tf.keras.layers.RandomCrop(),
-        tf.image.random_hue(0.2),
-        tf.image.random_contrast(0.2, 0.5),
-        tf.image.random_brightness(0.2)
+      #  tf.image.random_hue(0.2),
+       # tf.image.random_contrast(0.2, 0.5),
+       # tf.image.random_brightness(0.2)
 
-    ])
-    input_image = data_augmentation(input_image)
+    #])
+#    input_image = data_augmentation(input_image)
+
+    input_image = tf.image.adjust_contrast(input_image,2.)
+    # tf.keras.layers.RandomCrop()
+    input_image = tf.image.random_hue(input_image,0.2)
+    input_image = tf.image.random_contrast(input_image,0.2, 0.5)
+    input_image = tf.image.random_brightness(input_image,0.2)
     if tf.random.uniform(()) > 0.5:
         input_image = tf.image.flip_left_right(input_image)
         input_mask = tf.image.flip_left_right(input_mask)

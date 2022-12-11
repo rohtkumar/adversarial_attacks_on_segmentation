@@ -11,7 +11,7 @@ sm.set_framework('tf.keras')
 K.backend.set_image_data_format('channels_last')
 
 def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None, epochs=5, verbose=True, test_kwargs=None, **kwargs):
-    """Runs the "adversarial" training loop described in Ilyas et al. (2019)
+    """
     
     Adversarial training allows for two separate attacks, one during training and a separate one during
     test. Note that if 'train_attack' is set to None, then this becomes standard training.
@@ -50,6 +50,7 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
             t = time.time()
             train_losses = []
             train_accs = []
+            train_ious = []
 
             for i, b in enumerate(train_ds.take(batch_train)):
                 X, y = b
@@ -64,11 +65,13 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
                 loss, iou, acc = model.train_on_batch(Xd, y)
                 train_losses.append(loss)
                 train_accs.append(acc)
+                train_ious.append(iou)
                 values = [('loss', loss),('IOU', iou), ('acc', acc) ]
                 progbar_train.update(i, values=values)
 
             test_losses = []
             test_accs = []
+            test_ious = []
             for i, vb in enumerate(test_ds.take(batch_test)):
                 Xtest, ytest = vb
 
@@ -89,14 +92,17 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
     #             print({l}, {acc}, {other_returned_val})
                 test_losses.append(loss)
                 test_accs.append(acc)
+                test_ious.append(iou)
                 values = [('loss', loss), ('IOU', iou), ('acc', acc)]
                 progbar_test.update(i, values=values)
 
             train_loss = sum(train_losses) / len(train_losses)
             train_acc = sum(train_accs) / len(train_accs)
+            train_iou = sum(train_ious) / len(train_ious)
 
             test_loss = sum(test_losses) / len(test_losses)
             test_acc = sum(test_accs) / len(test_accs)
+            test_iou = sum(test_ious) / len(test_ious)
 
             wait += 1
             if test_loss < best:
@@ -109,6 +115,6 @@ def adversarial_training(args, train_ds, test_ds, train_attack, test_attack=None
 
             if verbose:
                 logging.info(f"Epoch {n}/{epochs}, Time: {(time.time()-t):0.2f} -- Train Loss: {train_loss:0.2f}, \
-                    Train Acc: {train_acc:0.2f}, Test Loss: {test_loss:0.2f}, Test Acc: {test_acc:0.2f}")
+                   Train IOU: {train_iou:0.2f}, Train Acc: {train_acc:0.2f},  Test Loss: {test_loss:0.2f}, Test IOU: {test_iou:0.2f}, Test Acc: {test_acc:0.2f}")
         logging.info("Adversarial Training completed..... Saving model.")
         tools.save_model(model, saved_model)

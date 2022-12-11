@@ -33,6 +33,7 @@ python3 ../src/main.py \
 --model_name=$MODEL \
 --img_size=128 \
 --is_train=False \
+--cuda_device="2,1" \
 --early_stopping=True \
 --early_stopping_patience=10 \
 --optimizer=Adam \
@@ -49,3 +50,4 @@ python3 ../src/main.py \
 --validation_augmentation=$Valid_Image_Augmentation \
 --validation_loss=$Valid_Loss_Function \
 --finetuning=False \
+
