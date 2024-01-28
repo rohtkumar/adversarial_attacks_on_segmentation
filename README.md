@@ -9,7 +9,7 @@ The repository further includes:
 	2. Modified dataset after each training.
 	3. Pretrained weights for the models after each training epoch for both L2 and Linf attacks.   
 
-#Traning on your own forest dataset
+# Traning on your own forest dataset
 
 This project is trained on forset dataset consisting of opensource yamaha forest and frieburg dataset on the pretrained model weights.
 
@@ -35,11 +35,11 @@ To train a model
 	4. Run the script as follows 
 `./train.sh ../dataset std_train ../data/saved_trained_model_weights`
 
-#Requirements
+# Requirements
 
 Python 3.7, Tensorflow 1.7, Keras 2.0.8 and other common packages listed in `requirements.txt`
 
-#Installation
+# Installation
 
 1. Clone the respository 
 2. Install dependencies
