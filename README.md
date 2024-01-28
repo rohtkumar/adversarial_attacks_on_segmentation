@@ -5,7 +5,6 @@
 The work here describes the adversarial attacks on the deep learning models used in segmentation tasks for off road environment and also provides the implmenatation in Python3, tensorflow and keras. The model highlighted here provides the segmentated images after different attacks on the dataset and its robustness against these adversarial attacks.
 
 The repository further includes:
-
 	1. Source code of the model trained against L2 and L inf attacks.
 	2. Modified dataset after each training.
 	3. Pretrained weights for the models after each training epoch for both L2 and Linf attacks.   
@@ -13,15 +12,15 @@ The repository further includes:
 #Traning on your own forest dataset
 
 This project is trained on forset dataset consisting of opensource yamaha forest and frieburg dataset on the pretrained model weights.
-To train on your own dataset follow as follows:
 
+To train on your own dataset follow as follows:
 	1. Make a folder named "dataset" inside the main repository 
 	2. Create folder as images and mask to store images and its labeled value in jpg format.
 	3. With the help of VIA (VGG Image Annotator), annotate your images and make sure to have a correct format. (http://www.robots.ox.ac.uk/~vgg/software/via/via-1.0.6.html) 
 
 # Training the Model
-There are 3 different modes of traning
 
+There are 3 different modes of traning
 	1. Standard Training - To train the model without any attacks with pretrained Kitti weights.
 	2. Adversial training - Traning the model with adversarial attacks.
 	3. Robustifier training - Traning the model for robustifiaction on the adversarial trained model
@@ -37,9 +36,11 @@ To train a model
 `./train.sh ../dataset std_train ../data/saved_trained_model_weights`
 
 #Requirements
+
 Python 3.7, Tensorflow 1.7, Keras 2.0.8 and other common packages listed in `requirements.txt`
 
 #Installation
+
 1. Clone the respository 
 2. Install dependencies
 `  pip3 install -r requirements.txt`
